@@ -1,5 +1,5 @@
-import { Suspense } from "react";
 import "./App.css";
+import { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RouterLanding from "./RouterLanding";
 import SessionOutGuard from "./guards/SessionOutGuard";

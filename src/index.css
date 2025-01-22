@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    src: url("./assets/fonts/BlackOpsOne-Regular.ttf");
+    font-family: custom1;
+}
