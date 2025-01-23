@@ -6,3 +6,7 @@
     src: url("./assets/fonts/BlackOpsOne-Regular.ttf");
     font-family: custom1;
 }
+
+* {
+    outline: none;
+}

@@ -1,6 +1,7 @@
 import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { cls } from "../common/utils";
 
 export default function Header() {
     return (
@@ -28,17 +29,12 @@ export default function Header() {
 }
 
 function Option({ name = "", to = "#" }) {
+    const className = " absolute top-0 -bottom-full group-hover:bottom-0 -z-10 opacity-0 group-hover:opacity-100 m-auto transition-all text-[--c1] ";
     return (
         <Link to={to} className=" relative group flex items-center text-xl uppercase leading-6 font-custom1 text-[--c3] ">
-            <FontAwesomeIcon
-                className=" absolute top-0 -bottom-full group-hover:bottom-0 left-0 group-hover:-left-3.5 -z-10 opacity-0 group-hover:opacity-100 m-auto transition-all text-[--c1] "
-                icon={faDumbbell}
-            />
+            <FontAwesomeIcon className={cls(className, "  left-0 group-hover:-left-3.5  ")} icon={faDumbbell} />
             <span className=" text-lg bg-[--c2] px-0.5 group-hover:text-[--c1] transition-all ">{name}</span>
-            <FontAwesomeIcon
-                className=" absolute top-0 -bottom-full group-hover:bottom-0 right-0 group-hover:-right-3.5 -z-10 opacity-0 group-hover:opacity-100 m-auto transition-all text-[--c1] "
-                icon={faDumbbell}
-            />
+            <FontAwesomeIcon className={cls(className, " right-0 group-hover:-right-3.5 ")} icon={faDumbbell} />
         </Link>
     );
 }
