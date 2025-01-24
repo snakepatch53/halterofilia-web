@@ -1,11 +1,12 @@
+import { useAuthStore } from "../stores/useAuthStore";
 import { apiService } from "./apiService";
 
 export async function login(data) {
-    console.log(data);
+    const socketId = useAuthStore.getState().socketId;
     const res = await apiService({
         resource: "auth/login",
         method: "POST",
-        data,
+        data: { ...data, socketId },
     });
 
     if (res?.success) {
@@ -14,9 +15,11 @@ export async function login(data) {
     return false;
 }
 
-export function logout() {
+export async function logout() {
+    const socketId = useAuthStore.getState().socketId;
     apiService({
         resource: "auth/logout",
         method: "POST",
+        data: { socketId },
     });
 }

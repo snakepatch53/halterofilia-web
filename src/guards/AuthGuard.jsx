@@ -6,7 +6,7 @@ import { useAuthStore } from "../stores/useAuthStore";
 export default function AuthGuard() {
     const isLogged = useAuthStore((state) => state.isLogged);
     // if (isLogged == null) return <Loading />;
+    // return <Outlet />;
     if (isLogged) return <Outlet />;
     return <Navigate replace to="/login" />;
-    // return <Outlet />;
 }

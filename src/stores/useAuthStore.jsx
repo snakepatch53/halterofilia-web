@@ -10,9 +10,7 @@ export const useAuthStore = create(
             isLogged: false,
             setSocketId: (socketId) => set({ socketId }),
             login: (user, token) => set({ user, token, isLogged: true }),
-            logout: () => {
-                set({ user: null, token: null });
-            },
+            logout: () => set({ user: null, token: null, isLogged: false }),
         }),
         {
             name: "auth",
