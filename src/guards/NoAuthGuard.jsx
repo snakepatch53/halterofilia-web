@@ -1,12 +1,12 @@
-import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-// import { SessionContext } from "../contexts/session";
-// import Loading from "../pages/Loading";
+import { useAuthStore } from "../stores/useAuthStore";
 
-export default function SessionOutGuard() {
+export default function NoAuthGuard() {
     // const { session } = useContext(SessionContext);
     // if (session == null) return <Loading />;
     // if (!session?.id) return <Outlet />;
     // return <Navigate replace to="/panel" />;
-    return <Outlet />;
+    const isLogged = useAuthStore((state) => state.isLogged);
+    if (!isLogged) return <Outlet />;
+    return <Navigate replace to="/panel" />;
 }

@@ -1,18 +1,14 @@
 import { apiService } from "./apiService";
 
-export async function login({ username, password }) {
+export async function login(data) {
+    console.log(data);
     const res = await apiService({
         resource: "auth/login",
         method: "POST",
-        data: {
-            username,
-            password,
-        },
+        data,
     });
 
-    console.log(res);
     if (res?.success) {
-        localStorage.setItem("session", res.access_token);
         return true;
     }
     return false;

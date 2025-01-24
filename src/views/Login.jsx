@@ -6,8 +6,10 @@ import * as Yup from "yup";
 import { showNotification } from "../components/Notification";
 import { cls } from "../common/utils";
 import { login } from "../services/authService";
+import { useAuthStore } from "../stores/useAuthStore";
 
 export default function Login() {
+    const socketId = useAuthStore((state) => state.socketId);
     return (
         <div className=" bg-black text-white flex justify-center items-center w-full min-h-screen ">
             <Formik
@@ -20,7 +22,7 @@ export default function Login() {
                     password: "",
                 }}
                 onSubmit={(values, { resetForm, setSubmitting }) => {
-                    login(values).then((res) => {
+                    login({ ...values, socketId }).then((res) => {
                         setSubmitting(false);
                         if (!res)
                             return showNotification({

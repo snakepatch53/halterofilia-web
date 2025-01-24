@@ -3,7 +3,7 @@ export default function Home() {
         <>
             <div>
                 <h1 className="text-4xl font-bold">Home</h1>
-                <p className="text-lg">Welcome to the Home page</p>
+                <p className="text-lg">Session HOME</p>
             </div>
         </>
     );

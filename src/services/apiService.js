@@ -1,32 +1,31 @@
-import { safeParseJSON } from "../common/utils";
+import { useAuthStore } from "../stores/useAuthStore";
 
 const isProduction = import.meta.env.MODE == "production";
-export const API_URL = isProduction ? import.meta.env.VITE_API_URL : import.meta.env.VITE_API_URL_LOCAL;
+const API_URL = isProduction ? import.meta.env.VITE_API_URL : import.meta.env.VITE_API_URL_LOCAL;
 
 export async function apiService({ resource, method = "GET", data = null, printResponse = false, formData = false }) {
-    const session = safeParseJSON(localStorage.getItem("session"));
-    const sessionToken = session?.token;
-
+    const token = useAuthStore.getState().token;
     let body = formData ? data : JSON.stringify(data);
     body = method === "GET" ? null : body;
 
     const headers = new Headers();
     headers.append("Accept", "application/json");
-    headers.append("Authorization", sessionToken ? `Bearer ${sessionToken}` : "");
+    headers.append("Authorization", `Bearer ${token}`);
     if (!formData) headers.append("Content-Type", "application/json");
     const response = await fetch(API_URL + resource, {
         method,
         headers,
         body,
-    }).then((res) => {
+    }).then(async (res) => {
+        if (printResponse) console.log(res);
         const statusCode = res.status;
+        const response = await res?.json();
         return {
             statusCode,
             success: res.ok,
-            ...res.json(),
+            ...response,
         };
     });
 
-    if (printResponse) console.log(response);
     return response;
 }
