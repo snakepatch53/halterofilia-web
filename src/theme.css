@@ -1,5 +1,14 @@
 :root {
     --c1: #1292ee;
-    --c2: black;
+    --c1-txt: white;
+
+    --c2: #1f2937;
+    --c2-txt: white;
+
     --c3: white;
+    --c3-txt: black;
+
+    --c4: #292d3e;
+    --c4-txt: white;
+    --c4-txt2: #1292ee;
 }

@@ -22,6 +22,7 @@ export default function Header() {
                     <Option name="Competencias" to="/competitions" />
                     <Option name="About" to="/about" />
                     <Option name="Contacto" to="/contact" />
+                    <Option name="Login" to="/login" />
                 </nav>
             </div>
         </header>

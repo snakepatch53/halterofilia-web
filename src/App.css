@@ -2,6 +2,10 @@
     --container-max-width: 1500px;
     --container-padding: 20px;
     --header-height: 70px;
+
+    --panel-header-height: 100px;
+    --panel-sidebar-width: 300px;
+    --panel-sidebar-width-min: 100px;
 }
 
 .parent {
