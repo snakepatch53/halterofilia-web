@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { logout } from "../services/authService";
 import { cls } from "../common/utils";
+import { useAuthStore } from "../stores/useAuthStore";
 export default function Header() {
     return (
         <div className=" sticky top-0 h-[--panel-header-height] p-4 ">
@@ -12,6 +13,7 @@ export default function Header() {
 }
 
 function ProfileButton() {
+    const user = useAuthStore((state) => state.user);
     const [open, setOpen] = useState(false);
     const toggle = () => setOpen((prev) => !prev);
     return (
@@ -30,9 +32,7 @@ function ProfileButton() {
                 <div className=" absolute -top-2 right-6 w-0 h-0 border-r-8 border-b-8 border-l-8 border-r-transparent border-l-transparent border-b-black/10 " />
                 <button className=" flex items-center gap-2 h-9 ">
                     <img className=" h-full aspect-square object-cover bg-white rounded-full " src="/user.png" alt="Foto de usuario anonimo" />
-                    <span className=" flex-1 whitespace-nowrap overflow-hidden text-ellipsis text-lg font-custom1 ">
-                        Harold Anderson Hernández Zambrano
-                    </span>
+                    <span className=" flex-1 whitespace-nowrap overflow-hidden text-ellipsis text-lg font-custom1 text-left ">{user.name}</span>
                 </button>
                 <button className=" h-10 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded " onClick={logout}>
                     Cerrar sesión
