@@ -5,6 +5,7 @@ import Sidebar from "./session.components/Sidebar";
 import { ROUTES_SESSION } from "./common/constants";
 
 const Home = lazy(() => import("./session.views/Home"));
+const Users = lazy(() => import("./session.views/Users"));
 
 export default function RouterSession() {
     return (
@@ -12,11 +13,11 @@ export default function RouterSession() {
             <Sidebar />
             <div className=" flex flex-col w-full ">
                 <Header />
-                <div className=" flex-1 ">
+                <div className=" flex-1 p-4 ">
                     <Suspense fallback={<p>Loading...</p>}>
                         <Routes>
                             <Route path={ROUTES_SESSION.HOME} element={<Home />} />
-                            <Route path={ROUTES_SESSION.USERS} element={<Home />} />
+                            <Route path={ROUTES_SESSION.USERS} element={<Users />} />
                         </Routes>
                     </Suspense>
                 </div>

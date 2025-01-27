@@ -8,5 +8,5 @@ export default function AuthGuard() {
     // if (isLogged == null) return <Loading />;
     // return <Outlet />;
     if (isLogged) return <Outlet />;
-    return <Navigate replace to="/login" />;
+    return <Navigate replace to="/login/" />;
 }

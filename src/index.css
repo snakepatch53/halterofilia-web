@@ -7,6 +7,11 @@
     font-family: custom1;
 }
 
+@font-face {
+    src: url("./assets/fonts/Dosis-Light.ttf");
+    font-family: custom2;
+}
+
 * {
     outline: none;
 }

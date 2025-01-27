@@ -1,31 +1,33 @@
 import { faBars, faHome, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Link, useLocation } from "react-router-dom";
 import { cls } from "../common/utils";
 import { usePanelStore } from "../stores/usePanelStore";
 import { ROUTES_SESSION } from "../common/constants";
+import Button from "../components/ui/Button";
 
 export default function Sidebar() {
-    const toggleSidebar = usePanelStore((state) => state.toggleSidebar);
+    const { toggleSidebar } = usePanelStore((state) => state);
     const open = usePanelStore((state) => state.openSidebar);
 
     return (
         <div
-            className={cls(" sticky top-0 h-screen w-[--panel-sidebar-width] p-4 pr-0 transition-all duration-200 ", {
-                " w-[--panel-sidebar-width-min] ": !open,
-            })}
+            className={cls(
+                " fixed h-auto z-20 ",
+                " md:sticky top-0 md:z-0 md:h-screen w-[--panel-sidebar-width-min] p-4 pr-0 transition-all duration-200 ",
+                {
+                    " md:w-[--panel-sidebar-width] ": open,
+                }
+            )}
         >
-            <div className=" flex flex-col gap-2 w-full h-full p-4 bg-black/10 rounded-xl ">
-                <div className=" flex gap-4 h-12 mb-3 ">
-                    <button className=" h-full aspect-square bg-blue-500 hover:bg-blue-700 text-white font-bold rounded  " onClick={toggleSidebar}>
-                        <FontAwesomeIcon icon={faBars} className="text-white" />
-                    </button>
+            <div className={cls(" flex flex-col gap-4 w-full h-full p-4 md:bg-black/10 rounded-xl ")}>
+                <div className=" flex gap-4 h-12 ">
+                    <Button className=" z-10 " onClick={toggleSidebar} icon={faBars} />
                     <h1
                         className={cls(
-                            " flex items-center max-w-[--panel-sidebar-width] opacity-100 overflow-hidden font-custom1 text-lg text-[--c1] uppercase transition-all ",
+                            " flex items-center max-w-0 opacity-0 overflow-hidden font-custom1 text-lg text-[--c1] uppercase transition-all ",
                             {
-                                " max-w-0 opacity-0 ": !open,
+                                " md:max-w-[--panel-sidebar-width] md:opacity-100 ": open,
                             }
                         )}
                     >
@@ -33,8 +35,18 @@ export default function Sidebar() {
                     </h1>
                 </div>
 
-                <Option to={ROUTES_SESSION.HOME} name="Home" icon={faHome} />
-                <Option to={ROUTES_SESSION.USERS} name="Usuarios" icon={faUsers} />
+                <div
+                    className={cls(
+                        " fixed inset-0 bg-black/30 backdrop-blur-md rounded-xl p-5 pt-24 ",
+                        " md:static md:p-0 md:bg-transparent md:backdrop-blur-0 flex flex-col gap-2 transition-all overflow-hidden ",
+                        {
+                            " max-h-0 p-0 opacity-0 md:max-h-none md:opacity-100 ": !open,
+                        }
+                    )}
+                >
+                    <Option to={ROUTES_SESSION.HOME} name="Home" icon={faHome} />
+                    <Option to={ROUTES_SESSION.USERS} name="Usuarios" icon={faUsers} />
+                </div>
             </div>
         </div>
     );
@@ -48,20 +60,18 @@ function Option({ to, name, icon }) {
     const isActive = pathname === pathTo;
 
     return (
-        <Link
+        <Button
+            tag={Link}
             to={pathTo}
-            className={cls("flex items-center gap-2  w-full h-12 px-4 bg-black/10 hover:bg-black/20 rounded-xl transition-all", {
-                " text-[--c1] ": isActive,
+            variant="2"
+            icon={icon}
+            label={name}
+            className={cls(" flex-row-reverse justify-end gap-2 w-full h-none text-[--c2-txt] font-custom1 uppercase ", {
+                " text-[--c2-txt2] ": isActive,
             })}
-        >
-            <FontAwesomeIcon className=" transition " icon={icon} />
-            <span
-                className={cls(" flex max-w-[--panel-sidebar-width] opacity-100 overflow-hidden font-custom1 uppercase transition-all  ", {
-                    " max-w-0 opacity-0 ": !open,
-                })}
-            >
-                {name}
-            </span>
-        </Link>
+            classLabel={cls({
+                " flex max-w-[--panel-sidebar-width] opacity-100 overflow-hidden font-custom1 uppercase transition-all ": !open,
+            })}
+        />
     );
 }

@@ -9,5 +9,5 @@ export default function NoAuthGuard() {
     // return <Navigate replace to="/panel" />;
     // return <Outlet />;
     if (!isLogged) return <Outlet />;
-    return <Navigate replace to="/panel" />;
+    return <Navigate replace to="/panel/" />;
 }
