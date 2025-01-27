@@ -31,7 +31,7 @@ export default function Users() {
                     <Th label="Email" />
                     <Th label="Role" />
                 </Thead>
-                <Tbody data={data} keyName="id">
+                <Tbody data={data}>
                     <Td name="id" mobile />
                     <Td name="name" mobile />
                     <Td name="email" />

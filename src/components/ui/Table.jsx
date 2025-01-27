@@ -18,7 +18,7 @@ export function Thead({ classThead = "", classTr = "", children }) {
     );
 }
 
-export function Tbody({ data, keyName, classBody = "", classTr = "", children }) {
+export function Tbody({ data, keyName = "id", classBody = "", classTr = "", children }) {
     return (
         <tbody className={cls("", classBody)}>
             {data.map((row) => (
