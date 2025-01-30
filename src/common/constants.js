@@ -6,4 +6,5 @@ export const ROUTES_LANDING = {
 export const ROUTES_SESSION = {
     HOME: "",
     USERS: "users",
+    INSTITUTIONS: "institutions",
 };

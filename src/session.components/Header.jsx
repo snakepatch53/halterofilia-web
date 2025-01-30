@@ -10,7 +10,7 @@ export default function Header() {
 
     return (
         <div className=" sticky z-10 top-0 h-[--panel-header-height] p-4 pb-0 ">
-            <div className=" flex items-center gap-2 w-full h-full p-4 pl-[73px] md:pl-4 bg-black/10 text-white  rounded-xl ">
+            <div className=" flex items-center gap-2 w-full h-full p-4 pl-[73px] md:pl-4 bg-black/10 backdrop-blur-sm text-white  rounded-xl ">
                 <HeaderComponent />
                 <ProfileButton />
             </div>

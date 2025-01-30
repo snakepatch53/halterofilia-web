@@ -39,7 +39,7 @@ export default function Login() {
             >
                 {({ handleSubmit, isSubmitting }) => (
                     <form className=" flex flex-col p-10 w-full max-w-96 shadow-lg rounded-md " onSubmit={handleSubmit}>
-                        <img className=" w-full max-w-28 aspect-square object-contain m-auto " src="./logo.png" alt="Logo de Ideasoft" />
+                        <img className=" w-full max-w-28 aspect-square object-contain m-auto " src="/logo.png" alt="Logo de Ideasoft" />
                         <h1 className=" text-3xl font-bold text-center ">Iniciar sesión</h1>
                         <Input name="username" label="Usuario:" placeholder="Ejm: pedro123" />
                         <Input name="password" label="Contraseña:" placeholder="Ejm: ********" type="password" />

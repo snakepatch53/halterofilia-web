@@ -6,6 +6,7 @@ import { ROUTES_SESSION } from "./common/constants";
 
 const Home = lazy(() => import("./session.views/Home"));
 const Users = lazy(() => import("./session.views/Users"));
+const Institutions = lazy(() => import("./session.views/Institutions"));
 
 export default function RouterSession() {
     return (
@@ -18,6 +19,7 @@ export default function RouterSession() {
                         <Routes>
                             <Route path={ROUTES_SESSION.HOME} element={<Home />} />
                             <Route path={ROUTES_SESSION.USERS} element={<Users />} />
+                            <Route path={ROUTES_SESSION.INSTITUTIONS} element={<Institutions />} />
                         </Routes>
                     </Suspense>
                 </div>

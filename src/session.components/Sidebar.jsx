@@ -1,4 +1,4 @@
-import { faBars, faHome, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faDumbbell, faHome, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 import { Link, useLocation } from "react-router-dom";
 import { cls } from "../common/utils";
@@ -46,6 +46,7 @@ export default function Sidebar() {
                 >
                     <Option to={ROUTES_SESSION.HOME} name="Home" icon={faHome} />
                     <Option to={ROUTES_SESSION.USERS} name="Usuarios" icon={faUsers} />
+                    <Option to={ROUTES_SESSION.INSTITUTIONS} name="Gimnasios" icon={faDumbbell} />
                 </div>
             </div>
         </div>
