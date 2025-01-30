@@ -10,7 +10,8 @@ export default function Header() {
 
     return (
         <div className=" sticky z-10 top-0 h-[--panel-header-height] p-4 pb-0 ">
-            <div className=" flex items-center gap-2 w-full h-full p-4 pl-[73px] md:pl-4 bg-black/10 backdrop-blur-sm text-white  rounded-xl ">
+            <div className=" relative flex items-center gap-2 w-full h-full p-4 pl-[73px] md:pl-4 text-white ">
+                <div className=" absolute -z-10 inset-0 bg-black/10 backdrop-blur-sm   rounded-xl " />
                 <HeaderComponent />
                 <ProfileButton />
             </div>
@@ -29,7 +30,7 @@ function ProfileButton() {
             </button>
             <div
                 className={cls(
-                    " absolute -right-4 top-[calc(100%+30px)] flex flex-col gap-4 w-screen max-w-80 max-h-96 p-4 rounded-xl bg-black/10 backdrop-blur-sm transition-all ",
+                    " absolute z-20 -right-4 top-[calc(100%+30px)] flex flex-col gap-4 w-screen max-w-80 max-h-96 bg-black/10 backdrop-blur-sm p-4 rounded-xl transition-all ",
                     {
                         " max-h-0 p-0 overflow-hidden opacity-0 ": !open,
                     }

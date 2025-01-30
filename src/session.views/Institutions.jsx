@@ -6,8 +6,13 @@ import { faDumbbell, faLocationArrow, faLocationDot, faPhone, faSave, faTextWidt
 import UseCrud from "../hooks/useCrud";
 import { useAuthStore } from "../stores/useAuthStore";
 import { edit, list, save } from "../services/InstitutionService";
+import { list as listUsers } from "../services/UserService";
+import { useEffect, useState } from "react";
+import { USER_ROLES } from "../common/constants";
 
 export default function Institutions() {
+    const [users, setUsers] = useState(null);
+
     const { user } = useAuthStore((state) => state);
     const { datalist, showForm, formValues, editMode, onSubmit, onRemove } = UseCrud({
         resource: "institution",
@@ -17,6 +22,13 @@ export default function Institutions() {
         edit,
     });
 
+    useEffect(() => {
+        if (user?.role === USER_ROLES.ADMIN) listUsers().then((data) => setUsers(data));
+        else setUsers([]);
+    }, [user]);
+
+    // console.log(users);
+    if (datalist === null) return null;
     return (
         <>
             <Table show={!showForm}>
@@ -81,6 +93,20 @@ export default function Institutions() {
                     validation={string().required("Ingrese las coordenadas").min(3, "Mínimo 3 caracteres").max(50, "Máximo 50 caracteres")}
                     icon={faLocationDot}
                     placeholder="Ingrese las coordenadas"
+                />
+
+                <InputSelect
+                    show={user.role === USER_ROLES.ADMIN}
+                    name="userId"
+                    valueInObject="user.id"
+                    label="Usuario:"
+                    validation={string().required("Seleccione el usuario")}
+                    datalist={{
+                        list: users,
+                        key: "id",
+                        value: "id",
+                        label: "name",
+                    }}
                 />
 
                 <Button className=" sm:col-span-2 w-full max-w-96 mx-auto uppercase mt-2 " type="submit" label="Guardar" icon={faSave} />

@@ -16,25 +16,29 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
         // Función recursiva para inspeccionar los children y sus hijos
         const extractInitialValues = (child) => {
             if (child?.props?.name) {
-                const value = child?.props?.value || "";
-                newInitialValues[child.props.name] = value;
-                if (child?.props?.validation) newValidationSchema[child.props.name] = child.props.validation;
+                const { name } = child.props;
+                let value = child?.props?.value || "";
+
+                // Si hay valores, los asignamos a los campos
+                if (values) {
+                    value = values[name] || value; // Si el campo está en values, lo asignamos
+                    if (child?.props?.valueInObject) {
+                        let tmp = values;
+                        child?.props?.valueInObject?.split(".")?.forEach((key) => (tmp = tmp[key]));
+                        value = tmp || value;
+                    }
+                }
+
+                if (child?.props?.show !== false) {
+                    newInitialValues[name] = value;
+                    if (child?.props?.validation) newValidationSchema[name] = child.props.validation;
+                }
             }
             if (child?.props?.children) React.Children.forEach(child.props.children, extractInitialValues);
         };
 
         React.Children.forEach(children, extractInitialValues);
         setValidationSchema(object().shape(newValidationSchema));
-
-        // Filtamos solo los valores que estén en el formulario
-        if (values) {
-            const newValues = Object.keys(newInitialValues).reduce((acc, key) => {
-                if (key in values) acc[key] = values[key];
-                else acc[key] = newInitialValues[key];
-                return acc;
-            }, {});
-            newInitialValues = newValues;
-        }
 
         setInitialValues(newInitialValues);
     }, [children, values]);
@@ -47,13 +51,16 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
         return React.Children.map(children, (child) => {
             // Si el child tiene un name, es un Input, le pasamos errors y touched
             if (child?.props?.name) {
-                const { name } = child.props;
+                const { name, show } = child.props;
 
                 const isError = !errors[name] ? false : errors[name];
                 const isTouched = !touched[name] ? false : touched[name];
-                return React.cloneElement(child, {
-                    error: !!isError && !!isTouched,
-                });
+
+                if (show !== false)
+                    return React.cloneElement(child, {
+                        error: !!isError && !!isTouched,
+                    });
+                else return null;
             }
 
             // Si no es un Input, pero tiene children, recorrerlo recursivamente
@@ -98,12 +105,13 @@ function InputLayout({ name, label = null, error, className = "", classError = "
     );
 }
 
-export function Input({ name, label = null, error, icon = null, className = "", classInput = "", classError, type, ...props }) {
+export function Input({ name, label = null, error, icon = null, className = "", classInput = "", classError, type, valueInObject, ...props }) {
     delete props?.value;
+    valueInObject; // Para evitar que se pasen a los props del input
 
-    const [show, setShow] = useState(false);
-    const showPassword = () => setShow(!show);
-    const _type = show ? "text" : type;
+    const [showPass, setShowPass] = useState(false);
+    const showPassword = () => setShowPass(!showPass);
+    const _type = showPass ? "text" : type;
 
     return (
         <InputLayout name={name} label={label} error={error} className={cls(" group ", className)} classError={classError}>
@@ -111,15 +119,16 @@ export function Input({ name, label = null, error, icon = null, className = "", 
             <Field className={cls(" px-3 w-full bg-transparent ", classInput)} type={_type} name={name} {...props} />
             {type === "password" && (
                 <button className=" opacity-0 group-hover:opacity-100 transition-all " type="button" onClick={showPassword}>
-                    <FontAwesomeIcon icon={show ? faEye : faEyeSlash} />
+                    <FontAwesomeIcon icon={showPass ? faEye : faEyeSlash} />
                 </button>
             )}
         </InputLayout>
     );
 }
 
-export function InputTextArea({ name, label = null, error, icon = null, className = "", classInput = "", classError, ...props }) {
+export function InputTextArea({ name, label = null, error, icon = null, className = "", classInput = "", classError, valueInObject, ...props }) {
     delete props?.value;
+    valueInObject; // Para evitar que se pasen a los props del input
 
     return (
         <InputLayout name={name} label={label} error={error} className={cls(" group ", className)} classError={classError}>
@@ -146,7 +155,8 @@ export function InputRadio({ name, label = null, error, children, className = ""
     );
 }
 
-export function InputRadioOption({ name, value, label = null, icon = null, ...props }) {
+export function InputRadioOption({ name, value, label = null, icon = null, valueInObject, ...props }) {
+    valueInObject; // Para evitar que se pasen a los props del input
     return (
         <>
             <Field
@@ -168,14 +178,18 @@ export function InputRadioOption({ name, value, label = null, icon = null, ...pr
     );
 }
 
-export function InputSelect({ name, label = null, placeholder = "", error, children, className = "", classError }) {
+export function InputSelect({ datalist = null, name, label = null, placeholder = "", error, children, className = "", classError }) {
+    const list =
+        datalist?.list && Array.isArray(datalist?.list) && datalist?.key && datalist?.value && datalist?.label
+            ? datalist?.list.map((item) => ({ key: item[datalist.key], value: item[datalist.value], label: item[datalist.label] }))
+            : datalist?.list;
+
     return (
         <InputLayout name={name} label={label} error={error} className={className} classError={classError} classContainerInput=" p-0 pr-3 ">
             <Field as="select" name={name} className=" w-full bg-transparent p-3 ">
                 <InputSelectOption value="" label={placeholder || "Seleccione una opción"} />
-                {React.Children.map(children, (child) => {
-                    return React.cloneElement(child, { name });
-                })}
+                {list && list.map((item) => <InputSelectOption key={item.key} value={item.value} label={item.label} />)}
+                {children}
             </Field>
         </InputLayout>
     );

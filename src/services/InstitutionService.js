@@ -7,8 +7,6 @@ export async function list() {
         resource: `${resource}?include=user`,
         method: "GET",
     });
-    console.log(res);
-
     if (res?.success && res?.response) return res?.response;
     else [];
 }
@@ -29,7 +27,6 @@ export async function edit(data, id) {
         method: "PATCH",
         data,
     });
-    console.log(res);
     if (res?.success && res?.response) return res?.response;
     else false;
 }
