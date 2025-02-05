@@ -13,3 +13,15 @@ export function safeParseJSON(str) {
         return null; // O puedes devolver un valor por defecto como `undefined` si prefieres
     }
 }
+
+export function getValueFromObject(data, name) {
+    let value = data[name];
+    if (name.includes(".")) {
+        const keys = name.split(".");
+        value = data;
+        keys.forEach((key) => {
+            if (value) value = value[key];
+        });
+    }
+    return value;
+}

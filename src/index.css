@@ -15,3 +15,47 @@
 * {
     outline: none;
 }
+
+/* body form input:-internal-autofill-selected {
+    appearance: unset !important;
+    background-image: none !important;
+    background-color: unset !important;
+    color: unset !important;
+} */
+
+/* Change Autocomplete styles in Chrome*/
+/* Change autocomplete styles in WebKit */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border: 0px solid transparent;
+    -webkit-text-fill-color: rgb(53, 53, 53);
+    -webkit-box-shadow: 0 0 0px 1000px #a8b3c2 inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input::placeholder {
+    color: var(--c2-txt);
+    opacity: 0.5;
+}
+
+.dark {
+    &:input:-webkit-autofill,
+    &:input:-webkit-autofill:hover,
+    &:input:-webkit-autofill:focus,
+    &:textarea:-webkit-autofill,
+    &:textarea:-webkit-autofill:hover,
+    &:textarea:-webkit-autofill:focus,
+    &:select:-webkit-autofill,
+    &:select:-webkit-autofill:hover,
+    &:select:-webkit-autofill:focus {
+        -webkit-text-fill-color: rgb(201, 199, 199);
+        -webkit-box-shadow: 0 0 0px 1000px #19212c inset;
+    }
+}

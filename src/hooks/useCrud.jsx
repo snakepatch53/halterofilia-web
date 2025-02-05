@@ -3,7 +3,7 @@ import { usePanelStore } from "../stores/usePanelStore";
 import CustomHeader from "../session.components/crud/CustomHeader";
 import { edit as _edit, list as _list, remove as _remove, save as _save } from "../services/crudService";
 
-export default function UseCrud({ resource, includeSubmitValues = {}, list = null, save = null, edit = null, remove = null }) {
+export default function UseCrud({ resource, includeSubmitValues = {}, list = null, save = null, edit = null, remove = null, isFormData = false }) {
     const { setHeaderComponent, resetHeaderComponent } = usePanelStore((state) => state);
     const [datalist, setDatalist] = useState(null);
     const [datalistFiltered, setDatalistFiltered] = useState(null);
@@ -65,13 +65,20 @@ export default function UseCrud({ resource, includeSubmitValues = {}, list = nul
             _remove(resource, data.id).then((res) => handleRemove(res, data));
         },
         onSubmit: (values) => {
-            const _values = { ...includeSubmitValues, ...values };
-            if (selected) {
-                if (edit) return edit(_values, selected?.id).then(handleEdit);
-                return _edit(resource, _values, selected?.id).then(handleEdit);
+            Object.keys(values).forEach((key) => (!values[key] ? delete values[key] : null));
+            let _values = { ...includeSubmitValues, ...values };
+            if (isFormData) {
+                const formData = new FormData();
+                Object.keys(values).forEach((key) => formData.append(key, values[key]));
+                _values = formData;
             }
-            if (save) return save(_values).then(handleSave);
-            _save(resource, _values).then(handleSave);
+
+            if (selected) {
+                if (edit) return edit(_values, selected?.id, isFormData).then(handleEdit);
+                return _edit(resource, _values, selected?.id, isFormData).then(handleEdit);
+            }
+            if (save) return save(_values, isFormData).then(handleSave);
+            _save(resource, _values, isFormData).then(handleSave);
         },
     };
 }

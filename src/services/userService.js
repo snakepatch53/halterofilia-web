@@ -27,10 +27,14 @@ export async function save(data) {
 }
 
 export async function edit(data, id) {
+    const keys = Object.keys(data);
+    const formData = new FormData();
+    keys.forEach((key) => formData.append(key, data[key]));
     const res = await apiService({
         resource: resource + "/" + id,
         method: "PATCH",
-        data,
+        data: formData,
+        formData: true,
     });
     if (res?.success && res?.response) return res?.response;
     else false;

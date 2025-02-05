@@ -9,7 +9,7 @@ import { login } from "../services/authService";
 
 export default function Login() {
     return (
-        <div className=" bg-black text-white flex justify-center items-center w-full min-h-screen ">
+        <div className=" bg-[--c2] text-[--c2-txt] flex justify-center items-center w-full min-h-screen ">
             <Formik
                 validationSchema={Yup.object({
                     username: Yup.string().required("Ingrese su correo electrónico"),
@@ -38,7 +38,7 @@ export default function Login() {
                 }}
             >
                 {({ handleSubmit, isSubmitting }) => (
-                    <form className=" flex flex-col p-10 w-full max-w-96 shadow-lg rounded-md " onSubmit={handleSubmit}>
+                    <form className=" flex flex-col p-10 w-full max-w-96 rounded-md " onSubmit={handleSubmit}>
                         <img className=" w-full max-w-28 aspect-square object-contain m-auto " src="/logo.png" alt="Logo de Ideasoft" />
                         <h1 className=" text-3xl font-bold text-center ">Iniciar sesión</h1>
                         <Input name="username" label="Usuario:" placeholder="Ejm: pedro123" />

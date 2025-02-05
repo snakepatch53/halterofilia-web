@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import React, { useEffect, useRef, useState } from "react";
-import { cls } from "../../common/utils";
+import { cls, getValueFromObject } from "../../common/utils";
 import Button from "./Button";
 import { faCancel, faCheck, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { usePanelStore } from "../../stores/usePanelStore";
 
 export function Table({ className = "", classTable = "", show = true, children }) {
+    const { darkMode } = usePanelStore((state) => state);
     const [selectedAction, setSelectedAction] = useState(null);
 
     if (!show) return null;
@@ -31,7 +33,7 @@ export function Table({ className = "", classTable = "", show = true, children }
     const Children = () => cloneChildren(children);
     return (
         <div className={cls(" w-full overflow-hidden rounded-xl ", className)}>
-            <TableStyle className={cls("w-full", classTable)}>
+            <TableStyle className={cls("w-full", classTable)} darkmode={darkMode}>
                 <Children />
             </TableStyle>
             <ConfirmModal
@@ -70,7 +72,7 @@ export function Th({ label, mobile = false, classTh }) {
     return (
         <th
             className={cls(" p-4 opacity-80 text-left font-custom2 uppercase tracking-wider ", classTh, {
-                "hidden md:table-cell": !mobile,
+                "hidden lg:table-cell": !mobile,
             })}
         >
             {label}
@@ -79,18 +81,11 @@ export function Th({ label, mobile = false, classTh }) {
 }
 
 export function Td({ data, name, mobile = false, classTd }) {
-    let value = data[name];
-    if (name.includes(".")) {
-        const keys = name.split(".");
-        value = data;
-        keys.forEach((key) => {
-            if (value) value = value[key];
-        });
-    }
+    let value = getValueFromObject(data, name);
     return (
         <td
             className={cls(" p-4 opacity-60 font-custom2 ", classTd, {
-                "hidden md:table-cell": !mobile,
+                "hidden lg:table-cell": !mobile,
             })}
         >
             {value}
@@ -98,9 +93,24 @@ export function Td({ data, name, mobile = false, classTd }) {
     );
 }
 
+export function TdPhoto({ data, name, mobile = false, classTd }) {
+    let value = getValueFromObject(data, name);
+    return (
+        <td
+            className={cls(" p-4 font-custom2 w-0 ", classTd, {
+                "hidden lg:table-cell": !mobile,
+            })}
+        >
+            <div className=" bg-black/20 w-10 m-auto aspect-square rounded-full overflow-hidden ">
+                <img className=" h-full w-full object-cover " src={value} alt={`This is a User photo`} />
+            </div>
+        </td>
+    );
+}
+
 export function TdActions({ onClickEdit = null, onClickDelete = null, classTd, data }) {
     return (
-        <td className={cls(" p-4 opacity-60 font-custom2 ", classTd)}>
+        <td className={cls(" p-4 opacity-60 font-custom2 w-0 ", classTd)}>
             <div className=" flex gap-2 ">
                 {onClickEdit && <Button onClick={() => onClickEdit(data)} icon={faEdit} className=" h-10 w-10 " variant={2} />}
                 {onClickDelete && <Button onClick={() => onClickDelete(data)} icon={faTrash} className=" h-10 w-10 " variant={2} />}
@@ -135,10 +145,12 @@ export function ConfirmModal({ text, show = false, onConfirm, onCancel }) {
     );
 }
 
-const TableStyle = styled.table`
+const TableStyle = styled.table.withConfig({
+    shouldForwardProp: (prop) => prop !== "darkmode", // Filtramos la prop 'darkmode'
+})`
     th,
     td {
-        border: 1px solid rgba(0, 0, 0, 0.15);
+        border: ${({ darkmode }) => (darkmode ? "1px solid rgba(0, 0, 0, 0.15)" : "none")};
     }
 
     tr:first-child th {

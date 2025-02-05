@@ -5,7 +5,9 @@ export const usePanelStore = create(
     persist(
         (set) => ({
             openSidebar: true,
+            darkMode: false,
             toggleSidebar: () => set((state) => ({ openSidebar: !state.openSidebar })),
+            toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
 
             // no local storage
             headerComponent: () => <h1 className=" tracking-widest uppercase ">Hola, Bienvenido!</h1>,

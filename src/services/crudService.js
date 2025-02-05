@@ -10,21 +10,23 @@ export async function list(resource) {
     else [];
 }
 
-export async function save(resource, data) {
+export async function save(resource, data, isFormData = false) {
     const res = await apiService({
         resource,
         method: "POST",
         data,
+        formData: isFormData,
     });
     if (res?.success && res?.response) return res?.response;
     else false;
 }
 
-export async function edit(resource, data, id) {
+export async function edit(resource, data, id, isFormData = false) {
     const res = await apiService({
         resource: resource + "/" + id,
         method: "PATCH",
         data,
+        formData: isFormData,
     });
     if (res?.success && res?.response) return res?.response;
     else false;

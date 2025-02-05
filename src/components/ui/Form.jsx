@@ -8,6 +8,7 @@ import { faEye, faEyeSlash, faQuestion } from "@fortawesome/free-solid-svg-icons
 export function Form({ className = "", show = true, onSubmit = () => {}, values = null, children }) {
     const [initialValues, setInitialValues] = useState(null);
     const [validationSchema, setValidationSchema] = useState(null);
+    const [files, setFiles] = useState({});
 
     useEffect(() => {
         let newInitialValues = {};
@@ -18,7 +19,6 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
             if (child?.props?.name) {
                 const { name } = child.props;
                 let value = child?.props?.value || "";
-
                 // Si hay valores, los asignamos a los campos
                 if (values) {
                     value = values[name] || value; // Si el campo está en values, lo asignamos
@@ -30,8 +30,14 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
                 }
 
                 if (child?.props?.show !== false) {
-                    newInitialValues[name] = value;
-                    if (child?.props?.validation) newValidationSchema[name] = child.props.validation;
+                    if (child.type.name !== "InputFile") newInitialValues[name] = value;
+                    else
+                        setFiles((prev) => {
+                            return { ...prev, [name]: null };
+                        });
+                    if (child?.props?.validation) {
+                        if (child.type.name !== "InputFile") newValidationSchema[name] = child.props.validation;
+                    }
                 }
             }
             if (child?.props?.children) React.Children.forEach(child.props.children, extractInitialValues);
@@ -45,9 +51,10 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
 
     if (!show) return null;
     if (!initialValues || !validationSchema) return null;
+    // console.log(initialValues);
 
     // Función recursiva para pasar errors y touched solo a los Inputs
-    const cloneChildrenWithProps = (children, errors, touched) => {
+    const cloneChildrenWithProps = (children, errors, touched, values) => {
         return React.Children.map(children, (child) => {
             // Si el child tiene un name, es un Input, le pasamos errors y touched
             if (child?.props?.name) {
@@ -56,17 +63,25 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
                 const isError = !errors[name] ? false : errors[name];
                 const isTouched = !touched[name] ? false : touched[name];
 
-                if (show !== false)
-                    return React.cloneElement(child, {
-                        error: !!isError && !!isTouched,
-                    });
-                else return null;
+                if (show !== false) {
+                    const newProps = { error: !!isError && !!isTouched, value: values[name] };
+                    if (child.type.name === "InputFile") {
+                        newProps.onChange = (event) => {
+                            const file = event.target.files[0];
+                            setFiles((prev) => {
+                                return { ...prev, [name]: file };
+                            });
+                        };
+                        newProps.value = files[name];
+                    }
+                    return React.cloneElement(child, newProps);
+                } else return null;
             }
 
             // Si no es un Input, pero tiene children, recorrerlo recursivamente
             if (child?.props?.children) {
                 return React.cloneElement(child, {
-                    children: cloneChildrenWithProps(child.props.children, errors, touched),
+                    children: cloneChildrenWithProps(child.props.children, errors, touched, values),
                 });
             }
 
@@ -75,17 +90,22 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
     };
 
     return (
-        <Formik initialValues={initialValues} enableReinitialize={true} validationSchema={validationSchema} onSubmit={onSubmit}>
-            {({ handleSubmit, errors, touched }) => (
+        <Formik
+            initialValues={initialValues}
+            enableReinitialize={true}
+            validationSchema={validationSchema}
+            onSubmit={(values) => onSubmit({ ...values, ...files })}
+        >
+            {({ handleSubmit, errors, touched, values }) => (
                 <form onSubmit={handleSubmit} className={cls(" grid gap-4 bg-black/10 p-8 rounded-xl ", className)}>
-                    {cloneChildrenWithProps(children, errors, touched)}
+                    {cloneChildrenWithProps(children, errors, touched, values)}
                 </form>
             )}
         </Formik>
     );
 }
 
-function InputLayout({ name, label = null, error, className = "", classError = "", classContainerInput = "", children }) {
+function InputLayout({ name, label = null, error, className = "", classError = "", classContainerInput = "", errorMessage = null, children }) {
     return (
         <div className={cls(" flex flex-col gap-2 ", className)}>
             <label htmlFor={name} className=" pl-2 text-[--c4-txt] font-custom2 tracking-widest ">
@@ -99,7 +119,20 @@ function InputLayout({ name, label = null, error, className = "", classError = "
                 {children}
             </div>
             <div className=" h-2 ">
-                <ErrorMessage name={name} component="div" className={cls(" pl-2 font-custom2 text-red-500 tracking-wide leading-3 ", classError)} />
+                <ErrorMessage
+                    name={name}
+                    component="div"
+                    className={cls(" pl-2 font-custom2 text-red-500 tracking-wide leading-3 ", classError, {
+                        hidden: errorMessage,
+                    })}
+                />
+                <div
+                    className={cls(" pl-2 font-custom2 text-red-500 tracking-wide leading-3 ", classError, {
+                        hidden: !errorMessage,
+                    })}
+                >
+                    {errorMessage}
+                </div>
             </div>
         </div>
     );
@@ -122,6 +155,57 @@ export function Input({ name, label = null, error, icon = null, className = "", 
                     <FontAwesomeIcon icon={showPass ? faEye : faEyeSlash} />
                 </button>
             )}
+        </InputLayout>
+    );
+}
+
+export function InputFile({
+    value,
+    name,
+    label = null,
+    placeholder = "",
+    icon = null,
+    className = "",
+    classInput = "",
+    classError,
+    validation,
+    onChange,
+    accept = "*",
+}) {
+    const [preview, setPreview] = useState(null);
+    const [error, setError] = useState(null);
+    const reader = new FileReader();
+    reader.onloadend = () => setPreview(reader.result);
+    if (value) reader.readAsDataURL(value);
+    useEffect(() => {
+        validation
+            .validate(value)
+            .then(() => setError(null))
+            .catch((err) => setError(value !== null ? err.message : null));
+    }, [validation, value]);
+
+    const isPreview = value && value?.type?.includes("image");
+    return (
+        <InputLayout
+            name={name}
+            label={label}
+            error={error}
+            errorMessage={error}
+            className={cls(" group ", className)}
+            classError={classError}
+            classContainerInput=" p-0 px-3 "
+        >
+            <FontAwesomeIcon icon={icon || faQuestion} className={cls(" text-sm ", { hidden: !icon || isPreview })} />
+            <div className={cls(" h-8 aspect-square bg-black/10 rounded-md overflow-hidden ", { hidden: !isPreview })}>
+                <img className=" w-full h-full object-contain " src={preview} alt="Preview Image" />
+            </div>
+            <label
+                className={cls(" p-3 w-full bg-transparent opacity-80 whitespace-nowrap text-ellipsis overflow-hidden cursor-pointer ", classInput)}
+                htmlFor={`file-${name}`}
+            >
+                {placeholder || "Seleccionar archivo"}
+            </label>
+            <input className={cls(" hidden ", classInput)} id={`file-${name}`} name={name} type="file" onChange={onChange} accept={accept} />
         </InputLayout>
     );
 }

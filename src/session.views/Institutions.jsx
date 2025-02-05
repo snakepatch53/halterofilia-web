@@ -33,11 +33,11 @@ export default function Institutions() {
         <>
             <Table show={!showForm}>
                 <Thead>
-                    <Th label="ID" mobile />
+                    <Th label="ID" mobile classTh="w-0" />
                     <Th label="Name" mobile />
                     <Th label="City" />
                     <Th label="User" />
-                    <Th label="Actions" />
+                    <Th label="Actions" mobile />
                 </Thead>
                 <Tbody datalist={datalist}>
                     <Td name="id" mobile />
