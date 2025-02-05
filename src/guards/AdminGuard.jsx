@@ -1,19 +1,15 @@
-import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { SessionContext } from "../context/session";
-import Loading from "../pages/Loading";
-
-const ROLE_NAME = "Administrador";
+import { ROUTES_SESSION, USER_ROLES } from "../common/constants";
+import { useAuthStore } from "../stores/useAuthStore";
 
 export default function AdminGuard() {
-    const { session } = useContext(SessionContext);
-    if (session == null) return <Loading />;
-    if (session?.role == ROLE_NAME) return <Outlet />;
-    return <Navigate replace to="./" />;
+    const { user } = useAuthStore((state) => state);
+    if (user?.role === USER_ROLES.ADMIN) return <Outlet />;
+    return <Navigate replace to={ROUTES_SESSION.BASE + ROUTES_SESSION.HOME} />;
 }
 
 export function AdminOptions({ children }) {
-    const { session } = useContext(SessionContext);
-    if (session?.role == ROLE_NAME) return children;
+    const { user } = useAuthStore((state) => state);
+    if (user?.role == USER_ROLES.ADMIN) return children;
     return null;
 }

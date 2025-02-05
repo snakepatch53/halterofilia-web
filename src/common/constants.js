@@ -9,6 +9,7 @@ export const ROUTES_LANDING = {
 };
 
 export const ROUTES_SESSION = {
+    BASE: "/panel/",
     HOME: "",
     USERS: "users",
     INSTITUTIONS: "institutions",

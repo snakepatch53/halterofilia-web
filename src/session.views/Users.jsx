@@ -4,10 +4,12 @@ import { string } from "yup";
 import Button from "../components/ui/Button";
 import { faLock, faSave, faShieldHalved, faUser } from "@fortawesome/free-solid-svg-icons";
 import UseCrud from "../hooks/useCrud";
+import { save } from "../services/userService";
 
 export default function Users() {
     const { datalist, showForm, formValues, editMode, onSubmit, onRemove } = UseCrud({
         resource: "user",
+        save,
     });
 
     return (

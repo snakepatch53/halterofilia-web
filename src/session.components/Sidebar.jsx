@@ -5,6 +5,7 @@ import { cls } from "../common/utils";
 import { usePanelStore } from "../stores/usePanelStore";
 import { ROUTES_SESSION } from "../common/constants";
 import Button from "../components/ui/Button";
+import { AdminOptions } from "../guards/AdminGuard";
 
 export default function Sidebar() {
     const { toggleSidebar } = usePanelStore((state) => state);
@@ -45,7 +46,9 @@ export default function Sidebar() {
                     )}
                 >
                     <Option to={ROUTES_SESSION.HOME} name="Home" icon={faHome} />
-                    <Option to={ROUTES_SESSION.USERS} name="Usuarios" icon={faUsers} />
+                    <AdminOptions>
+                        <Option to={ROUTES_SESSION.USERS} name="Usuarios" icon={faUsers} />
+                    </AdminOptions>
                     <Option to={ROUTES_SESSION.INSTITUTIONS} name="Gimnasios" icon={faDumbbell} />
                 </div>
             </div>
@@ -56,7 +59,7 @@ export default function Sidebar() {
 function Option({ to, name, icon }) {
     const open = usePanelStore((state) => state.openSidebar);
 
-    const pathTo = "/panel/" + to;
+    const pathTo = ROUTES_SESSION.BASE + to;
     const { pathname } = useLocation();
     const isActive = pathname === pathTo;
 

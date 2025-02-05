@@ -13,10 +13,14 @@ export async function list() {
 }
 
 export async function save(data) {
+    const keys = Object.keys(data);
+    const formData = new FormData();
+    keys.forEach((key) => formData.append(key, data[key]));
     const res = await apiService({
         resource,
         method: "POST",
-        data,
+        data: formData,
+        formData: true,
     });
     if (res?.success && res?.response) return res?.response;
     else false;

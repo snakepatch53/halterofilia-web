@@ -6,7 +6,7 @@ import { faDumbbell, faLocationArrow, faLocationDot, faPhone, faSave, faTextWidt
 import UseCrud from "../hooks/useCrud";
 import { useAuthStore } from "../stores/useAuthStore";
 import { edit, list, save } from "../services/InstitutionService";
-import { list as listUsers } from "../services/UserService";
+import { list as listUsers } from "../services/userService";
 import { useEffect, useState } from "react";
 import { USER_ROLES } from "../common/constants";
 

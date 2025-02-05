@@ -3,6 +3,7 @@ import { Suspense, lazy } from "react";
 import Header from "./session.components/Header";
 import Sidebar from "./session.components/Sidebar";
 import { ROUTES_SESSION } from "./common/constants";
+import AdminGuard from "./guards/AdminGuard";
 
 const Home = lazy(() => import("./session.views/Home"));
 const Users = lazy(() => import("./session.views/Users"));
@@ -18,7 +19,9 @@ export default function RouterSession() {
                     <Suspense fallback={<p>Loading...</p>}>
                         <Routes>
                             <Route path={ROUTES_SESSION.HOME} element={<Home />} />
-                            <Route path={ROUTES_SESSION.USERS} element={<Users />} />
+                            <Route element={<AdminGuard />}>
+                                <Route path={ROUTES_SESSION.USERS} element={<Users />} />
+                            </Route>
                             <Route path={ROUTES_SESSION.INSTITUTIONS} element={<Institutions />} />
                         </Routes>
                     </Suspense>
