@@ -1,3 +1,9 @@
+import AnimateElement from "../components/AnimateElement";
+
 export default function Home() {
-    return <div>Hello, World!</div>;
+    return (
+        <AnimateElement>
+            <div>Hello, World!</div>
+        </AnimateElement>
+    );
 }

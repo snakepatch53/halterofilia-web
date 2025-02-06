@@ -6,6 +6,7 @@ import { faAddressCard, faEnvelope, faImagePortrait, faLock, faSave, faShieldHal
 import UseCrud from "../hooks/useCrud";
 import { isCedula } from "../common/validations";
 import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
+import AnimateElement from "../components/AnimateElement";
 
 export default function Users() {
     const { datalist, showForm, formValues, editMode, onSubmit, onRemove } = UseCrud({
@@ -14,7 +15,7 @@ export default function Users() {
     });
 
     return (
-        <>
+        <AnimateElement>
             <Table show={!showForm}>
                 <Thead>
                     <Th label="ID" mobile classTh="w-0" />
@@ -102,6 +103,6 @@ export default function Users() {
                 />
                 <Button className=" sm:col-span-2 w-full max-w-96 mx-auto uppercase mt-2 " type="submit" label="Guardar" icon={faSave} />
             </Form>
-        </>
+        </AnimateElement>
     );
 }

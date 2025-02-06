@@ -9,6 +9,7 @@ import { edit, list, save } from "../services/InstitutionService";
 import { list as listUsers } from "../services/userService";
 import { useEffect, useState } from "react";
 import { USER_ROLES } from "../common/constants";
+import AnimateElement from "../components/AnimateElement";
 
 export default function Institutions() {
     const [users, setUsers] = useState(null);
@@ -30,7 +31,7 @@ export default function Institutions() {
     // console.log(users);
     if (datalist === null) return null;
     return (
-        <>
+        <AnimateElement>
             <Table show={!showForm}>
                 <Thead>
                     <Th label="ID" mobile classTh="w-0" />
@@ -111,6 +112,6 @@ export default function Institutions() {
 
                 <Button className=" sm:col-span-2 w-full max-w-96 mx-auto uppercase mt-2 " type="submit" label="Guardar" icon={faSave} />
             </Form>
-        </>
+        </AnimateElement>
     );
 }

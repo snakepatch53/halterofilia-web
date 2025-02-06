@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@view-transition {
+    navigation: auto;
+}
+
 @font-face {
     src: url("./assets/fonts/BlackOpsOne-Regular.ttf");
     font-family: custom1;
@@ -16,15 +20,6 @@
     outline: none;
 }
 
-/* body form input:-internal-autofill-selected {
-    appearance: unset !important;
-    background-image: none !important;
-    background-color: unset !important;
-    color: unset !important;
-} */
-
-/* Change Autocomplete styles in Chrome*/
-/* Change autocomplete styles in WebKit */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
