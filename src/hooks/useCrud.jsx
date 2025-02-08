@@ -3,7 +3,16 @@ import { usePanelStore } from "../stores/usePanelStore";
 import CustomHeader from "../session.components/crud/CustomHeader";
 import { edit as _edit, list as _list, remove as _remove, save as _save } from "../services/crudService";
 
-export default function UseCrud({ resource, includeSubmitValues = {}, list = null, save = null, edit = null, remove = null, isFormData = false }) {
+export default function UseCrud({
+    resource,
+    includeSubmitValues = {},
+    list = null,
+    save = null,
+    edit = null,
+    remove = null,
+    isFormData = false,
+    httpQuery = "",
+}) {
     const { setHeaderComponent, resetHeaderComponent } = usePanelStore((state) => state);
     const [datalist, setDatalist] = useState(null);
     const [datalistFiltered, setDatalistFiltered] = useState(null);
@@ -14,8 +23,8 @@ export default function UseCrud({ resource, includeSubmitValues = {}, list = nul
     const showForm = selected !== undefined;
     useEffect(() => {
         if (list) list().then((res) => setDatalist(res));
-        else _list(resource).then((res) => setDatalist(res));
-    }, [resource, list]);
+        else _list(resource, httpQuery).then((res) => setDatalist(res));
+    }, [resource, list, httpQuery]);
 
     useEffect(() => {
         setHeaderComponent(() => (
@@ -75,10 +84,10 @@ export default function UseCrud({ resource, includeSubmitValues = {}, list = nul
 
             if (selected) {
                 if (edit) return edit(_values, selected?.id, isFormData).then(handleEdit);
-                return _edit(resource, _values, selected?.id, isFormData).then(handleEdit);
+                return _edit(resource, _values, selected?.id, isFormData, httpQuery).then(handleEdit);
             }
             if (save) return save(_values, isFormData).then(handleSave);
-            _save(resource, _values, isFormData).then(handleSave);
+            _save(resource, _values, isFormData, httpQuery).then(handleSave);
         },
     };
 }

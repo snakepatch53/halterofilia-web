@@ -40,17 +40,15 @@ input::placeholder {
     opacity: 0.5;
 }
 
-.dark {
-    &:input:-webkit-autofill,
-    &:input:-webkit-autofill:hover,
-    &:input:-webkit-autofill:focus,
-    &:textarea:-webkit-autofill,
-    &:textarea:-webkit-autofill:hover,
-    &:textarea:-webkit-autofill:focus,
-    &:select:-webkit-autofill,
-    &:select:-webkit-autofill:hover,
-    &:select:-webkit-autofill:focus {
-        -webkit-text-fill-color: rgb(201, 199, 199);
-        -webkit-box-shadow: 0 0 0px 1000px #19212c inset;
-    }
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus {
+    -webkit-text-fill-color: rgb(201, 199, 199);
+    -webkit-box-shadow: 0 0 0px 1000px #19212c inset;
 }

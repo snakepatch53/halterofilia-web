@@ -1,4 +1,4 @@
-import { faBars, faDumbbell, faHome, faMoon, faSun, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faDumbbell, faHome, faMedal, faMoon, faSun, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 import { Link, useLocation } from "react-router-dom";
 import { cls } from "../common/utils";
@@ -50,6 +50,7 @@ export default function Sidebar() {
                         <Option to={ROUTES_SESSION.USERS} name="Usuarios" icon={faUsers} />
                     </AdminOptions>
                     <Option to={ROUTES_SESSION.INSTITUTIONS} name="Gimnasios" icon={faDumbbell} />
+                    <Option to={ROUTES_SESSION.CHAMPIONSHIPS} name="Competencias" icon={faMedal} />
                 </div>
                 <DarkModeButton />
             </div>

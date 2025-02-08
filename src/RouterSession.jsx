@@ -8,6 +8,7 @@ import AdminGuard from "./guards/AdminGuard";
 const Home = lazy(() => import("./session.views/Home"));
 const Users = lazy(() => import("./session.views/Users"));
 const Institutions = lazy(() => import("./session.views/Institutions"));
+const Championships = lazy(() => import("./session.views/Championships"));
 
 export default function RouterSession() {
     return (
@@ -23,6 +24,7 @@ export default function RouterSession() {
                                 <Route path={ROUTES_SESSION.USERS} element={<Users />} />
                             </Route>
                             <Route path={ROUTES_SESSION.INSTITUTIONS} element={<Institutions />} />
+                            <Route path={ROUTES_SESSION.CHAMPIONSHIPS} element={<Championships />} />
                         </Routes>
                     </Suspense>
                 </div>

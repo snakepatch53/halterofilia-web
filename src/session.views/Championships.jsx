@@ -2,20 +2,20 @@ import { Table, Tbody, Td, TdActions, Th, Thead } from "../components/ui/Table";
 import { Form, Input, InputSelect, InputSelectOption, InputTextArea } from "../components/ui/Form";
 import { string } from "yup";
 import Button from "../components/ui/Button";
-import { faDumbbell, faLocationArrow, faLocationDot, faPhone, faSave, faTextWidth } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faDumbbell, faLocationArrow, faLocationDot, faPhone, faSave, faTextWidth } from "@fortawesome/free-solid-svg-icons";
 import UseCrud from "../hooks/useCrud";
 import { useAuthStore } from "../stores/useAuthStore";
 import { list as listUsers } from "../services/userService";
 import { useEffect, useState } from "react";
 import { USER_ROLES } from "../common/constants";
 import AnimateElement from "../components/AnimateElement";
+import { formatDate } from "../common/utils";
 
-export default function Institutions() {
+export default function Championships() {
     const [users, setUsers] = useState(null);
-
     const { user } = useAuthStore((state) => state);
     const { datalist, showForm, formValues, editMode, onSubmit, onRemove } = UseCrud({
-        resource: "institution",
+        resource: "championship",
         httpQuery: "?include=user",
         includeSubmitValues: { userId: user?.id },
     });
@@ -25,7 +25,6 @@ export default function Institutions() {
         else setUsers([]);
     }, [user]);
 
-    // console.log(users);
     if (datalist === null) return null;
     return (
         <AnimateElement>
@@ -34,14 +33,18 @@ export default function Institutions() {
                     <Th label="ID" mobile classTh="w-0" />
                     <Th label="Name" mobile />
                     <Th label="City" />
-                    <Th label="User" />
+                    <Th label="Address" />
+                    <Th label="Date" />
+                    <Th label="User" mobile />
                     <Th label="Actions" mobile />
                 </Thead>
                 <Tbody datalist={datalist}>
                     <Td name="id" mobile />
                     <Td name="name" mobile />
                     <Td name="city" />
-                    <Td name="user.name" />
+                    <Td name="address" />
+                    <Td name="date" formatter={formatDate} />
+                    <Td name="user.name" mobile />
                     <TdActions onClickEdit={editMode} onClickDelete={onRemove} />
                 </Tbody>
             </Table>
@@ -55,6 +58,22 @@ export default function Institutions() {
                     placeholder="Ingrese el nombre"
                 />
                 <Input
+                    name="date"
+                    label="Fecha:"
+                    type="datetime-local"
+                    validation={string().required("Seleccione la fecha")}
+                    icon={faCalendar}
+                    placeholder="Seleccione la fecha"
+                />
+                <InputTextArea
+                    name="description"
+                    label="Description:"
+                    validation={string().required("Ingrese la descripción").min(20, "Mínimo 3 caracteres").max(200, "Máximo 50 caracteres")}
+                    icon={faTextWidth}
+                    placeholder="Ingrese la descripción"
+                    className=" sm:col-span-2 "
+                />
+                <Input
                     name="phone"
                     label="Celular:"
                     validation={string()
@@ -62,14 +81,6 @@ export default function Institutions() {
                         .matches(/^09\d{8}$/, "El número de celular debe comenzar con 09 y tener 10 dígitos")}
                     icon={faPhone}
                     placeholder="Ingrese el numero de celular"
-                />
-                <InputTextArea
-                    name="description"
-                    label="Description:"
-                    validation={string().required("Ingrese la descripción").min(3, "Mínimo 3 caracteres").max(50, "Máximo 50 caracteres")}
-                    icon={faTextWidth}
-                    placeholder="Ingrese la descripción"
-                    className=" sm:col-span-2 "
                 />
                 <InputSelect name="country" label="País:" validation={string().required("Seleccione el país")}>
                     <InputSelectOption value="Ecuador" label="Ecuador" />

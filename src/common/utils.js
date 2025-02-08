@@ -1,5 +1,7 @@
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
+import { es } from "date-fns/locale";
+import { format } from "date-fns";
 
 export function cls(...clases) {
     return twMerge(clsx(...clases));
@@ -24,4 +26,10 @@ export function getValueFromObject(data, name) {
         });
     }
     return value;
+}
+
+export function formatDate(value, formatStr = "dd 'de' MMMM 'de' yyyy") {
+    return format(new Date(value), formatStr, {
+        locale: es,
+    });
 }

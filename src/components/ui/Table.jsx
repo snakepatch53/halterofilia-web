@@ -80,15 +80,15 @@ export function Th({ label, mobile = false, classTh }) {
     );
 }
 
-export function Td({ data, name, mobile = false, classTd }) {
+export function Td({ data, name, mobile = false, classTd, formatter = (v) => v }) {
     let value = getValueFromObject(data, name);
     return (
         <td
             className={cls(" p-4 opacity-60 font-custom2 ", classTd, {
-                "hidden lg:table-cell": !mobile,
+                " hidden lg:table-cell ": !mobile,
             })}
         >
-            {value}
+            {formatter(value)}
         </td>
     );
 }
@@ -111,7 +111,7 @@ export function TdPhoto({ data, name, mobile = false, classTd }) {
 export function TdActions({ onClickEdit = null, onClickDelete = null, classTd, data }) {
     return (
         <td className={cls(" p-4 opacity-60 font-custom2 w-0 ", classTd)}>
-            <div className=" flex gap-2 ">
+            <div className=" flex flex-col sm:flex-row gap-2 ">
                 {onClickEdit && <Button onClick={() => onClickEdit(data)} icon={faEdit} className=" h-10 w-10 " variant={2} />}
                 {onClickDelete && <Button onClick={() => onClickDelete(data)} icon={faTrash} className=" h-10 w-10 " variant={2} />}
             </div>
