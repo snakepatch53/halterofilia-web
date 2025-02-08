@@ -17,6 +17,7 @@ export default function Championships() {
     const { datalist, showForm, formValues, editMode, onSubmit, onRemove } = UseCrud({
         resource: "championship",
         httpQuery: "?include=user",
+        entity: "Competencia",
         includeSubmitValues: { userId: user?.id },
     });
 

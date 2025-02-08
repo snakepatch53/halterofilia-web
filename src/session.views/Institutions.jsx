@@ -17,6 +17,7 @@ export default function Institutions() {
     const { datalist, showForm, formValues, editMode, onSubmit, onRemove } = UseCrud({
         resource: "institution",
         httpQuery: "?include=user",
+        entity: "Institución",
         includeSubmitValues: { userId: user?.id },
     });
 

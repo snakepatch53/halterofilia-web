@@ -3,7 +3,7 @@ import Button from "../../components/ui/Button";
 import Search from "../../components/ui/Search";
 import { cls } from "../../common/utils";
 
-export default function CustomHeader({ onClickButton, onSearch, showForm }) {
+export default function CustomHeader({ onClickButton, onSearch, showForm, searchPlaceholder = "" }) {
     return (
         <>
             <Button
@@ -16,6 +16,7 @@ export default function CustomHeader({ onClickButton, onSearch, showForm }) {
             />
             <Search
                 onSearch={onSearch}
+                placeholder={searchPlaceholder}
                 classWrap={cls(" flex-1 mx-auto ", {
                     " hidden ": !showForm,
                 })}

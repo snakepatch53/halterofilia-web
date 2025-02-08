@@ -11,6 +11,7 @@ import AnimateElement from "../components/AnimateElement";
 export default function Users() {
     const { datalist, showForm, formValues, editMode, onSubmit, onRemove } = UseCrud({
         resource: "user",
+        entity: "Usuario",
         isFormData: true,
     });
 

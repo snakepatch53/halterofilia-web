@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePanelStore } from "../stores/usePanelStore";
 import CustomHeader from "../session.components/crud/CustomHeader";
 import { edit as _edit, list as _list, remove as _remove, save as _save } from "../services/crudService";
 
 export default function UseCrud({
     resource,
+    entity = "",
     includeSubmitValues = {},
     list = null,
     save = null,
@@ -17,36 +18,39 @@ export default function UseCrud({
     const [datalist, setDatalist] = useState(null);
     const [datalistFiltered, setDatalistFiltered] = useState(null);
     const [selected, setSelected] = useState(undefined);
-
     const toggleShowForm = () => setSelected((prev) => (prev === undefined ? null : undefined));
 
     const showForm = selected !== undefined;
+
     useEffect(() => {
         if (list) list().then((res) => setDatalist(res));
         else _list(resource, httpQuery).then((res) => setDatalist(res));
     }, [resource, list, httpQuery]);
+
+    const handleSearch = useCallback(
+        (e) => {
+            const { value } = e.target;
+            if (value === "") return setDatalistFiltered(null);
+            setDatalistFiltered(
+                datalist?.filter((item) =>
+                    Object.keys(item).some((key) => (typeof item[key] === "string" ? item[key].toLowerCase().includes(value.toLowerCase()) : false))
+                )
+            );
+        },
+        [datalist]
+    );
 
     useEffect(() => {
         setHeaderComponent(() => (
             <CustomHeader
                 onClickButton={toggleShowForm}
                 showForm={!showForm}
-                onSearch={(e) => {
-                    const { value } = e.target;
-                    if (value === "") return setDatalistFiltered(null);
-
-                    setDatalistFiltered(
-                        datalist?.filter((item) =>
-                            Object.keys(item).some((key) =>
-                                typeof item[key] === "string" ? item[key].toLowerCase().includes(value.toLowerCase()) : false
-                            )
-                        )
-                    );
-                }}
+                onSearch={handleSearch}
+                searchPlaceholder={"Buscar " + entity.toLowerCase()}
             />
         ));
         return () => resetHeaderComponent();
-    }, [setHeaderComponent, resetHeaderComponent, selected, showForm, datalist]);
+    }, [setHeaderComponent, resetHeaderComponent, showForm, handleSearch, entity]);
 
     const handleSave = (res) => {
         if (res) {

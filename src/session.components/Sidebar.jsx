@@ -23,7 +23,7 @@ export default function Sidebar() {
         >
             <div className={cls(" flex flex-col gap-4 w-full h-full p-4 md:bg-black/10 rounded-xl ")}>
                 <div className=" flex gap-4 h-12 ">
-                    <Button className=" z-10 " onClick={toggleSidebar} icon={faBars} />
+                    <Button className=" z-10 mt-[2px] " onClick={toggleSidebar} icon={faBars} />
                     <h1
                         className={cls(
                             " flex items-center max-w-0 opacity-0 overflow-hidden font-custom1 text-lg text-[--c1] uppercase transition-all ",
