@@ -1,9 +1,10 @@
 import AnimateElement from "../components/AnimateElement";
+import CompetitionState from "../components/CompetitionState";
 
 export default function Home() {
     return (
         <AnimateElement>
-            <div>Hello, World!</div>
+            <CompetitionState />
         </AnimateElement>
     );
 }
