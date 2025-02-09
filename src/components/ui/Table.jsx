@@ -108,12 +108,15 @@ export function TdPhoto({ data, name, mobile = false, classTd }) {
     );
 }
 
-export function TdActions({ onClickEdit = null, onClickDelete = null, classTd, data }) {
+export function TdActions({ onClickEdit = null, onClickDelete = null, classTd = "", classWrap = "", data, children }) {
+    const Children = () => React.Children.map(children, (child) => React.cloneElement(child, { data }));
+
     return (
         <td className={cls(" p-4 opacity-60 font-custom2 w-0 ", classTd)}>
-            <div className=" flex flex-col sm:flex-row gap-2 ">
+            <div className={cls(" flex flex-col sm:flex-row gap-2 ", classWrap)}>
                 {onClickEdit && <Button onClick={() => onClickEdit(data)} icon={faEdit} className=" h-10 w-10 " variant={2} />}
                 {onClickDelete && <Button onClick={() => onClickDelete(data)} icon={faTrash} className=" h-10 w-10 " variant={2} />}
+                <Children />
             </div>
         </td>
     );

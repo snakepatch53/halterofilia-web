@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { usePanelStore } from "../stores/usePanelStore";
 import CustomHeader from "../session.components/crud/CustomHeader";
 import { edit as _edit, list as _list, remove as _remove, save as _save } from "../services/crudService";
+import { showNotification } from "../components/Notification";
 
 export default function UseCrud({
     resource,
@@ -23,8 +24,8 @@ export default function UseCrud({
     const showForm = selected !== undefined;
 
     useEffect(() => {
-        if (list) list().then((res) => setDatalist(res));
-        else _list(resource, httpQuery).then((res) => setDatalist(res));
+        if (list) list(httpQuery).then((res) => (res.success ? setDatalist(res.data) : setDatalist([])));
+        else _list(resource, httpQuery).then((res) => (res.success ? setDatalist(res.data) : setDatalist([])));
     }, [resource, list, httpQuery]);
 
     const handleSearch = useCallback(
@@ -53,19 +54,21 @@ export default function UseCrud({
     }, [setHeaderComponent, resetHeaderComponent, showForm, handleSearch, entity]);
 
     const handleSave = (res) => {
-        if (res) {
-            setSelected(undefined);
-            setDatalist((prev) => [...prev, res]);
-        }
+        if (!res.success) return dangerNotification(res);
+        setSelected(undefined);
+        setDatalist((prev) => [...prev, res.data]);
+        successNotification(res, "Registro guardado");
     };
     const handleEdit = (res) => {
-        if (res) {
-            setSelected(undefined);
-            setDatalist((prev) => prev.map((item) => (item.id === res?.id ? res : item)));
-        }
+        if (!res.success) return dangerNotification(res);
+        setSelected(undefined);
+        setDatalist((prev) => prev.map((item) => (item.id === res?.data?.id ? res.data : item)));
+        successNotification(res, "Registro actualizado");
     };
     const handleRemove = (res, data) => {
-        if (res) setDatalist((prev) => prev.filter((item) => item.id !== data.id));
+        if (!res.success) return dangerNotification(res);
+        setDatalist((prev) => prev.filter((item) => item.id !== data.id));
+        successNotification(res, "Registro eliminado");
     };
 
     return {
@@ -87,11 +90,26 @@ export default function UseCrud({
             }
 
             if (selected) {
-                if (edit) return edit(_values, selected?.id, isFormData).then(handleEdit);
+                if (edit) return edit(_values, selected?.id, isFormData, httpQuery).then(handleEdit);
                 return _edit(resource, _values, selected?.id, isFormData, httpQuery).then(handleEdit);
             }
-            if (save) return save(_values, isFormData).then(handleSave);
+            if (save) return save(_values, isFormData, httpQuery).then(handleSave);
             _save(resource, _values, isFormData, httpQuery).then(handleSave);
         },
     };
+}
+
+function dangerNotification(res) {
+    if (res.success) return;
+    let message = "Error de servidor";
+    if (res?.message) {
+        if (Array.isArray(res?.message)) message = res?.message[0];
+        else message = res?.message;
+    }
+    showNotification({ title: "Error", message, type: "danger" });
+}
+
+function successNotification(res, message) {
+    if (!res.success) return;
+    showNotification({ title: "Éxito", message, type: "success" });
 }

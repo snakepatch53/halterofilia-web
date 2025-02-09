@@ -59,7 +59,7 @@ function Input({ type = "text", name, label = "", placeholder = "" }) {
     return (
         <>
             <label className=" ml-1 mb-1 mt-2 ">{label}</label>
-            <div className=" flex bg-white border text-black rounded-md p-2 ">
+            <div className=" flex bg-black/20 text-[--c2-txt] rounded-md p-3 ">
                 <Field className=" flex-1 bg-transparent " name={name} type={_type} placeholder={placeholder} />
                 {type === "password" && (
                     <button type="button" onClick={showPassword}>

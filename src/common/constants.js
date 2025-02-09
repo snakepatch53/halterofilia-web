@@ -14,4 +14,5 @@ export const ROUTES_SESSION = {
     USERS: "users",
     INSTITUTIONS: "institutions",
     CHAMPIONSHIPS: "championships",
+    CHAMPIONSHIP_CATEGORIES: "championships/:id/categories",
 };

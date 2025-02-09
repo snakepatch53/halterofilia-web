@@ -9,6 +9,7 @@ const Home = lazy(() => import("./session.views/Home"));
 const Users = lazy(() => import("./session.views/Users"));
 const Institutions = lazy(() => import("./session.views/Institutions"));
 const Championships = lazy(() => import("./session.views/Championships"));
+const ChampionshipCategories = lazy(() => import("./session.views/ChampionshipCategories"));
 
 export default function RouterSession() {
     return (
@@ -25,6 +26,7 @@ export default function RouterSession() {
                             </Route>
                             <Route path={ROUTES_SESSION.INSTITUTIONS} element={<Institutions />} />
                             <Route path={ROUTES_SESSION.CHAMPIONSHIPS} element={<Championships />} />
+                            <Route path={ROUTES_SESSION.CHAMPIONSHIP_CATEGORIES} element={<ChampionshipCategories />} />
                         </Routes>
                     </Suspense>
                 </div>

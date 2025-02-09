@@ -18,7 +18,7 @@ export default function useApp() {
 
     useEffect(() => {
         listenToEvent("onlogin", (data) => {
-            console.log(data);
+            // console.log(data);
 
             const { isLogged } = data;
             if (isLogged) return login(data.user, data.access_token);

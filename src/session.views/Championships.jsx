@@ -2,14 +2,15 @@ import { Table, Tbody, Td, TdActions, Th, Thead } from "../components/ui/Table";
 import { Form, Input, InputSelect, InputSelectOption, InputTextArea } from "../components/ui/Form";
 import { string } from "yup";
 import Button from "../components/ui/Button";
-import { faCalendar, faDumbbell, faLocationArrow, faLocationDot, faPhone, faSave, faTextWidth } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faDumbbell, faGear, faLocationArrow, faLocationDot, faPhone, faSave, faTextWidth } from "@fortawesome/free-solid-svg-icons";
 import UseCrud from "../hooks/useCrud";
 import { useAuthStore } from "../stores/useAuthStore";
 import { list as listUsers } from "../services/userService";
 import { useEffect, useState } from "react";
-import { USER_ROLES } from "../common/constants";
+import { ROUTES_SESSION, USER_ROLES } from "../common/constants";
 import AnimateElement from "../components/AnimateElement";
 import { formatDate } from "../common/utils";
+import { Link } from "react-router-dom";
 
 export default function Championships() {
     const [users, setUsers] = useState(null);
@@ -25,6 +26,11 @@ export default function Championships() {
         if (user?.role === USER_ROLES.ADMIN) listUsers().then((data) => setUsers(data));
         else setUsers([]);
     }, [user]);
+
+    const ButtonConfig = ({ data }) => {
+        const url = ROUTES_SESSION.BASE + ROUTES_SESSION.CHAMPIONSHIP_CATEGORIES.replace(":id", data?.id);
+        return <Button tag={Link} to={url} icon={faGear} className=" h-10 w-10 " variant={2} />;
+    };
 
     if (datalist === null) return null;
     return (
@@ -46,7 +52,9 @@ export default function Championships() {
                     <Td name="address" />
                     <Td name="date" formatter={formatDate} />
                     <Td name="user.name" mobile />
-                    <TdActions onClickEdit={editMode} onClickDelete={onRemove} />
+                    <TdActions onClickEdit={editMode} onClickDelete={onRemove}>
+                        <ButtonConfig />
+                    </TdActions>
                 </Tbody>
             </Table>
 

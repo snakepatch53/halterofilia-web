@@ -13,16 +13,9 @@ export async function apiService({ resource, method = "GET", data = null, printR
     headers.append("Authorization", `Bearer ${token}`);
     if (!formData) headers.append("Content-Type", "application/json");
     const options = { method, headers, body };
-    const res = await fetch(API_URL + resource, options).then(async (res) => {
+    return await fetch(API_URL + resource, options).then(async (res) => {
         if (printResponse) console.log(res);
-        const statusCode = res.status;
         const response = await res?.json();
-        return {
-            statusCode,
-            success: res.ok,
-            response,
-        };
+        return response;
     });
-
-    return res;
 }
