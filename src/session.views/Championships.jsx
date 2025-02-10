@@ -23,7 +23,7 @@ export default function Championships() {
     });
 
     useEffect(() => {
-        if (user?.role === USER_ROLES.ADMIN) listUsers().then((data) => setUsers(data));
+        if (user?.role === USER_ROLES.ADMIN) listUsers().then((data) => setUsers(data?.success ? data.data : []));
         else setUsers([]);
     }, [user]);
 
@@ -50,7 +50,7 @@ export default function Championships() {
                     <Td name="name" mobile />
                     <Td name="city" />
                     <Td name="address" />
-                    <Td name="date" formatter={formatDate} />
+                    <Td name="date" formatter={(v) => formatDate(v)} />
                     <Td name="user.name" mobile />
                     <TdActions onClickEdit={editMode} onClickDelete={onRemove}>
                         <ButtonConfig />

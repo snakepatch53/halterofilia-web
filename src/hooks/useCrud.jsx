@@ -81,6 +81,8 @@ export default function UseCrud({
             _remove(resource, data.id).then((res) => handleRemove(res, data));
         },
         onSubmit: (values) => {
+            console.log(values);
+
             Object.keys(values).forEach((key) => (!values[key] ? delete values[key] : null));
             let _values = { ...includeSubmitValues, ...values };
             if (isFormData) {

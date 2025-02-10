@@ -14,5 +14,6 @@ export const ROUTES_SESSION = {
     USERS: "users",
     INSTITUTIONS: "institutions",
     CHAMPIONSHIPS: "championships",
-    CHAMPIONSHIP_CATEGORIES: "championships/:id/categories",
+    CHAMPIONSHIP_CATEGORIES: "championship/:id/categories",
+    CATEGORy_JUDGES: "category/:id/judges",
 };

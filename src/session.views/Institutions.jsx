@@ -22,7 +22,7 @@ export default function Institutions() {
     });
 
     useEffect(() => {
-        if (user?.role === USER_ROLES.ADMIN) listUsers().then((data) => setUsers(data));
+        if (user?.role === USER_ROLES.ADMIN) listUsers().then((res) => (res?.success ? setUsers(res.data) : setUsers([])));
         else setUsers([]);
     }, [user]);
 

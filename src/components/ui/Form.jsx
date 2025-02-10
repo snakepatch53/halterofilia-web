@@ -21,12 +21,17 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
                 let value = child?.props?.value || "";
                 // Si hay valores, los asignamos a los campos
                 if (values) {
-                    value = values[name] || value; // Si el campo está en values, lo asignamos
+                    // value = values[name] || value; // Si el campo está en values, lo asignamos
+                    // lo anterior ya no funciona por que ahora sabemos que podrian haber datos tipo booleanos
+                    // y si el valor es false, no se asigna, por lo que se asigna el valor por defecto
+                    value = values[name] !== undefined && values[name] !== null ? values[name] : value;
+
                     if (child?.props?.valueInObject) {
                         let tmp = values;
                         child?.props?.valueInObject?.split(".")?.forEach((key) => (tmp = tmp[key]));
                         value = tmp || value;
                     }
+                    if (child?.props?.formatter) value = child.props.formatter(value);
                 }
 
                 if (child?.props?.show !== false) {
@@ -229,7 +234,9 @@ export function InputTextArea({ name, label = null, error, icon = null, classNam
     );
 }
 
-export function InputRadio({ name, label = null, error, children, className = "", classError }) {
+export function InputRadio({ name, label = null, error, children, className = "", classError, formatter }) {
+    formatter;
+
     return (
         <InputLayout name={name} label={label} error={error} className={className} classError={classError} classContainerInput=" p-0 ">
             {React.Children.map(children, (child) => {
@@ -241,6 +248,7 @@ export function InputRadio({ name, label = null, error, children, className = ""
 
 export function InputRadioOption({ name, value, label = null, icon = null, valueInObject, ...props }) {
     valueInObject; // Para evitar que se pasen a los props del input
+
     return (
         <>
             <Field

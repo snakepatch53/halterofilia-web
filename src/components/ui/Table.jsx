@@ -82,13 +82,14 @@ export function Th({ label, mobile = false, classTh }) {
 
 export function Td({ data, name, mobile = false, classTd, formatter = (v) => v }) {
     let value = getValueFromObject(data, name);
+
     return (
         <td
             className={cls(" p-4 opacity-60 font-custom2 ", classTd, {
                 " hidden lg:table-cell ": !mobile,
             })}
         >
-            {formatter(value)}
+            {formatter(value, data)}
         </td>
     );
 }
