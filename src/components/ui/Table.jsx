@@ -142,7 +142,7 @@ export function ConfirmModal({ text, show = false, onConfirm, onCancel }) {
                 <p className=" font-custom2 tracking-wide text-lg ">{text}</p>
                 <div className=" flex gap-4 justify-center ">
                     <Button label="Confirmar" icon={faCheck} onClick={onConfirm} />
-                    <Button className=" bg-black/50 " variant={2} label="Cancelar" icon={faCancel} onClick={onCancel} />
+                    <Button className=" dark:bg-black/50 " variant={2} label="Cancelar" icon={faCancel} onClick={onCancel} />
                 </div>
             </div>
         </div>

@@ -8,5 +8,5 @@ export async function findAllByChampionshipId(id, httpQuery = "") {
 }
 
 export async function findOne(id) {
-    return await apiService({ resource: `${resource}/${id}` });
+    return await apiService({ resource: `${resource}/${id}?include=championship` });
 }

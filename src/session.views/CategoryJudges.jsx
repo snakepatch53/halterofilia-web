@@ -39,7 +39,10 @@ export default function CategoryJudges() {
     else if (category === false) return <p>No Existe</p>;
     return (
         <AnimateElement>
-            <TitleEntity title="Jueces de la Categoría" label={category?.weight + "kg - " + category?.gender} />
+            <div className="flex justify-between items-center mb-4 p-6 rounded-xl bg-black/10">
+                <TitleEntity title="Competencia" label={category?.championship?.name} className=" m-0 " />
+                <TitleEntity title="Jueces de la Categoría" label={category?.weight + "kg - " + category?.gender} className=" m-0 " />
+            </div>
             <Table show={!showForm}>
                 <Thead>
                     <Th label="ID" mobile classTh="w-0" />

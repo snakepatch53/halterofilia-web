@@ -44,7 +44,7 @@ export default function ChampionshipCategories() {
 
     return (
         <AnimateElement>
-            <TitleEntity title="Categorías de la Competencia" label={championship?.name} />
+            <TitleEntity title="Categorías de la Competencia" label={championship?.name} layout />
             <Table show={!showForm}>
                 <Thead>
                     <Th label="ID" mobile classTh="w-0" />
