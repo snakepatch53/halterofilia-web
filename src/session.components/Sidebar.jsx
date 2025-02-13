@@ -87,7 +87,7 @@ function DarkModeButton() {
     return (
         <button
             className={cls(
-                " fixed bottom-5 left-5 flex items-center p-2 bg-black/10 dark:text-dark-c2-txt text-c2-txt rounded-full transition-all cursor-pointer ",
+                " fixed bottom-5 left-5 flex items-center p-2 bg-c2 dark:bg-dark-c2   rounded-full transition-all cursor-pointer ",
                 " md:static ",
                 {
                     " p-1.5 ": !openSidebar,
@@ -105,14 +105,18 @@ function DarkModeOption({ icon, isActive, label }) {
     const { openSidebar } = usePanelStore((state) => state);
     return (
         <div
-            className={cls(" flex-1 flex items-center justify-center gap-1 p-2 text-xs opacity-60 rounded-full transition-all ", "  md:text-sm ", {
-                " bg-black/20 opacity-90 ": isActive,
-                " md:p-1 md:text-xs ": !openSidebar,
-            })}
+            className={cls(
+                " flex-1 flex items-center justify-center gap-1 p-2 text-xs opacity-60 rounded-full transition-all text-c2-txt dark:text-dark-c2-txt ",
+                "  md:text-sm ",
+                {
+                    " bg-c1 opacity-90 ": isActive,
+                    " md:p-1 md:text-xs ": !openSidebar,
+                }
+            )}
         >
             <FontAwesomeIcon icon={icon} />
             <span
-                className={cls(" max-w-20 max-h-10 opacity-100 overflow-hidden transition-all ", {
+                className={cls(" max-w-20 max-h-10 opacity-100 overflow-hidden text-c2-txt dark:text-dark-c2-txt transition-all ", {
                     " md:max-w-0 md:max-h-0 md:opacity-0 ": !openSidebar,
                 })}
             >
