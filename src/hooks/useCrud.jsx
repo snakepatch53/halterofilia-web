@@ -3,6 +3,7 @@ import { usePanelStore } from "../stores/usePanelStore";
 import CustomHeader from "../session.components/crud/CustomHeader";
 import { edit as _edit, list as _list, remove as _remove, save as _save } from "../services/crudService";
 import { showNotification } from "../components/Notification";
+import { searchInArray } from "../common/utils";
 
 export default function UseCrud({
     resource,
@@ -32,11 +33,7 @@ export default function UseCrud({
         (e) => {
             const { value } = e.target;
             if (value === "") return setDatalistFiltered(null);
-            setDatalistFiltered(
-                datalist?.filter((item) =>
-                    Object.keys(item).some((key) => (typeof item[key] === "string" ? item[key].toLowerCase().includes(value.toLowerCase()) : false))
-                )
-            );
+            setDatalistFiltered(searchInArray(datalist, value));
         },
         [datalist]
     );

@@ -33,3 +33,20 @@ export function formatDate(value, formatStr = "dd 'de' MMMM 'de' yyyy") {
         locale: es,
     });
 }
+
+export function searchInArray(data, value) {
+    return data.filter((item) => existInRow(item, value));
+}
+
+function existInRow(row, value) {
+    if (!row) return false;
+    const keys = Object.keys(row);
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const item = row[key];
+        if (typeof item === "object") {
+            if (existInRow(item, value)) return true;
+        } else if (typeof item === "string" && item.toLowerCase().includes(value.toLowerCase())) return true;
+    }
+    return false;
+}
