@@ -15,9 +15,9 @@ export default function Sidebar() {
         <div
             className={cls(
                 " fixed h-auto z-20 ",
-                " md:sticky top-0 md:z-0 md:h-screen w-[--panel-sidebar-width-min] p-4 pr-0 transition-all duration-200 ",
+                " md:sticky top-0 md:z-0 md:h-screen w-[var(--panel-sidebar-width-min)] p-4 pr-0 transition-all duration-200 ",
                 {
-                    " md:w-[--panel-sidebar-width] ": openSidebar,
+                    " md:w-[var(--panel-sidebar-width)] ": openSidebar,
                 }
             )}
         >
@@ -26,9 +26,9 @@ export default function Sidebar() {
                     <Button className=" z-10 mt-[2px] " onClick={toggleSidebar} icon={faBars} />
                     <h1
                         className={cls(
-                            " flex items-center max-w-0 opacity-0 overflow-hidden font-custom1 text-lg text-[--c1] uppercase transition-all ",
+                            " flex items-center max-w-0 opacity-0 overflow-hidden font-custom1 text-lg dark:text-dark-c2-txt text-c2-txt2 uppercase transition-all ",
                             {
-                                " md:max-w-[--panel-sidebar-width] md:opacity-100 ": openSidebar,
+                                " md:max-w-[var(--panel-sidebar-width)] md:opacity-100 ": openSidebar,
                             }
                         )}
                     >
@@ -72,11 +72,11 @@ function Option({ to, name, icon }) {
             variant="2"
             icon={icon}
             label={name}
-            className={cls(" flex-row-reverse justify-end gap-2 w-full h-none text-[--c2-txt] font-custom1 uppercase ", {
-                " text-[--c2-txt2] ": isActive,
+            className={cls(" flex-row-reverse justify-end gap-2 w-full h-none dark:text-dark-c2-txt text-c2-txt font-custom1 uppercase ", {
+                " text-c2-txt2 dark:text-c2-txt2 ": isActive,
             })}
             classLabel={cls({
-                " flex max-w-[--panel-sidebar-width] opacity-100 overflow-hidden font-custom1 uppercase transition-all ": !open,
+                " flex max-w-[var(--panel-sidebar-width)] opacity-100 overflow-hidden font-custom1 uppercase transition-all ": !open,
             })}
         />
     );
@@ -86,9 +86,13 @@ function DarkModeButton() {
     const { darkMode, toggleDarkMode, openSidebar } = usePanelStore((state) => state);
     return (
         <button
-            className={cls(" fixed bottom-5 left-5 flex items-center p-2 bg-black/10 text-[--c2-txt] rounded-full transition-all ", " md:static ", {
-                " p-1.5 ": !openSidebar,
-            })}
+            className={cls(
+                " fixed bottom-5 left-5 flex items-center p-2 bg-black/10 dark:text-dark-c2-txt text-c2-txt rounded-full transition-all cursor-pointer ",
+                " md:static ",
+                {
+                    " p-1.5 ": !openSidebar,
+                }
+            )}
             onClick={toggleDarkMode}
         >
             <DarkModeOption icon={faSun} isActive={!darkMode} label="Light" />

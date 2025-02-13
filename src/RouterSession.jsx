@@ -14,7 +14,7 @@ const CategoryJudges = lazy(() => import("./session.views/CategoryJudges"));
 
 export default function RouterSession() {
     return (
-        <div className=" flex min-h-screen bg-[--c2] text-[--c2-txt] ">
+        <div className=" flex min-h-screen bg-c2 dark:bg-dark-c2 text-c2-txt dark:text-dark-c2-txt ">
             <Sidebar />
             <div className=" flex flex-col w-full ">
                 <Header />

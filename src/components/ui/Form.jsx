@@ -59,7 +59,7 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
     // console.log(initialValues);
 
     // Función recursiva para pasar errors y touched solo a los Inputs
-    const cloneChildrenWithProps = (children, errors, touched, values) => {
+    const cloneChildrenWithProps = (children, errors, touched, values, isSubmitting) => {
         return React.Children.map(children, (child) => {
             // Si el child tiene un name, es un Input, le pasamos errors y touched
             if (child?.props?.name) {
@@ -79,14 +79,19 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
                         };
                         newProps.value = files[name];
                     }
+                    if (child?.props?.isSubmitting) {
+                        newProps.isSubmitting = isSubmitting;
+                    }
                     return React.cloneElement(child, newProps);
                 } else return null;
+            } else if (child?.props?.isSubmitting) {
+                return React.cloneElement(child, { isSubmitting });
             }
 
             // Si no es un Input, pero tiene children, recorrerlo recursivamente
             if (child?.props?.children) {
                 return React.cloneElement(child, {
-                    children: cloneChildrenWithProps(child.props.children, errors, touched, values),
+                    children: cloneChildrenWithProps(child.props.children, errors, touched, values, isSubmitting),
                 });
             }
 
@@ -99,11 +104,11 @@ export function Form({ className = "", show = true, onSubmit = () => {}, values 
             initialValues={initialValues}
             enableReinitialize={true}
             validationSchema={validationSchema}
-            onSubmit={(values) => onSubmit({ ...values, ...files })}
+            onSubmit={(values, ...args) => onSubmit({ ...values, ...files }, ...args)}
         >
-            {({ handleSubmit, errors, touched, values }) => (
+            {({ handleSubmit, errors, touched, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit} className={cls(" grid gap-4 bg-black/10 p-8 rounded-xl ", className)}>
-                    {cloneChildrenWithProps(children, errors, touched, values)}
+                    {cloneChildrenWithProps(children, errors, touched, values, isSubmitting)}
                 </form>
             )}
         </Formik>
@@ -153,7 +158,7 @@ export function Input({ name, label = null, error, icon = null, className = "", 
 
     return (
         <InputLayout name={name} label={label} error={error} className={cls(" group ", className)} classError={classError}>
-            <FontAwesomeIcon icon={icon || faQuestion} className={cls(" text-sm ", { hidden: !icon })} />
+            {icon && <FontAwesomeIcon icon={icon || faQuestion} className=" text-sm " />}
             <Field className={cls(" px-3 w-full bg-transparent ", classInput)} type={_type} name={name} {...props} />
             {type === "password" && (
                 <button className=" opacity-0 group-hover:opacity-100 transition-all " type="button" onClick={showPassword}>

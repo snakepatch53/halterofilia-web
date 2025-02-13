@@ -1,87 +1,75 @@
-import { faEye, faEyeSlash, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ErrorMessage, Field, Formik } from "formik";
-import { useState } from "react";
-import * as Yup from "yup";
+import { faLock, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
 import { showNotification } from "../components/Notification";
 import { cls } from "../common/utils";
 import { login } from "../services/authService";
+import Button from "../components/ui/Button";
+import { Form, Input } from "../components/ui/Form";
+import { string } from "yup";
 
 export default function Login() {
+    const handleSubmit = (values, { resetForm, setSubmitting }) => {
+        login(values).then((res) => {
+            setSubmitting(false);
+            if (!res)
+                return showNotification({
+                    title: "Cancelado",
+                    message: "Credenciales incorrectas",
+                    type: "danger",
+                });
+            resetForm();
+            showNotification({
+                title: "Sesión iniciada",
+                message: "Bienvenido",
+                type: "success",
+            });
+        });
+    };
     return (
-        <div className=" bg-[--c2] text-[--c2-txt] flex justify-center items-center w-full min-h-screen ">
-            <Formik
-                validationSchema={Yup.object({
-                    username: Yup.string().required("Ingrese su correo electrónico"),
-                    password: Yup.string().required("Ingrese su contraseña"),
-                })}
-                initialValues={{
+        <div className=" flex flex-col justify-center items-center w-full min-h-screen bg-c2 dark:bg-dark-c2 text-c2-txt dark:text-dark-c2-txt  ">
+            <div className=" flex flex-col items-center">
+                <img className=" w-full max-w-28 aspect-square object-contain " src="/logo.png" alt="Logo de Ideasoft" />
+                <h1 className=" text-3xl font-bold text-center ">Iniciar sesión</h1>
+            </div>
+            <Form
+                onSubmit={handleSubmit}
+                values={{
                     username: "",
                     password: "",
                 }}
-                onSubmit={(values, { resetForm, setSubmitting }) => {
-                    login(values).then((res) => {
-                        setSubmitting(false);
-                        if (!res)
-                            return showNotification({
-                                title: "Cancelado",
-                                message: "Credenciales incorrectas",
-                                type: "danger",
-                            });
-                        resetForm();
-                        showNotification({
-                            title: "Sesión iniciada",
-                            message: "Bienvenido",
-                            type: "success",
-                        });
-                    });
-                }}
+                className=" flex flex-col w-full max-w-96 bg-transparent "
             >
-                {({ handleSubmit, isSubmitting }) => (
-                    <form className=" flex flex-col p-10 w-full max-w-96 rounded-md " onSubmit={handleSubmit}>
-                        <img className=" w-full max-w-28 aspect-square object-contain m-auto " src="/logo.png" alt="Logo de Ideasoft" />
-                        <h1 className=" text-3xl font-bold text-center ">Iniciar sesión</h1>
-                        <Input name="username" label="Usuario:" placeholder="Ejm: pedro123" />
-                        <Input name="password" label="Contraseña:" placeholder="Ejm: ********" type="password" />
-                        <Button label="Iniciar sesión" isSubmitting={isSubmitting} />
-                    </form>
-                )}
-            </Formik>
-            {/*  */}
+                <Input
+                    icon={faUser}
+                    type="text"
+                    name="username"
+                    label="Usuario:"
+                    placeholder="Ejm: pedro123"
+                    validation={string().required("Ingrese su nombre de usuario")}
+                />
+                <Input
+                    icon={faLock}
+                    type="password"
+                    name="password"
+                    label="Contraseña:"
+                    placeholder="Ejm: ********"
+                    validation={string().required("Ingrese su contraseña")}
+                />
+
+                <CustomButton isSubmitting />
+            </Form>
         </div>
     );
 }
-
-function Input({ type = "text", name, label = "", placeholder = "" }) {
-    const [show, setShow] = useState(false);
-    const showPassword = () => setShow(!show);
-    const _type = show ? "text" : type;
+function CustomButton({ isSubmitting }) {
     return (
-        <>
-            <label className=" ml-1 mb-1 mt-2 ">{label}</label>
-            <div className=" flex bg-black/20 text-[--c2-txt] rounded-md p-3 ">
-                <Field className=" flex-1 bg-transparent " name={name} type={_type} placeholder={placeholder} />
-                {type === "password" && (
-                    <button type="button" onClick={showPassword}>
-                        <FontAwesomeIcon icon={show ? faEye : faEyeSlash} />
-                    </button>
-                )}
-            </div>
-            <ErrorMessage name={name} component="div" className="text-red-500 text-sm" />
-        </>
-    );
-}
-
-function Button({ type = "submit", label = "", isSubmitting }) {
-    return (
-        <button
+        <Button
+            type="submit"
+            label="Iniciar sesión"
+            icon={isSubmitting && faSpinner}
             disabled={isSubmitting}
-            className={cls(" bg-[--c1] text-white rounded-md p-3 mt-5 opacity-90 hover:opacity-100 transition-all ", {
+            className={cls({
                 " opacity-50 hover:opacity-50 ": isSubmitting,
             })}
-            type={type}
-        >
-            {!isSubmitting ? label : <FontAwesomeIcon icon={faSpinner} spin />}
-        </button>
+        />
     );
 }

@@ -18,7 +18,7 @@ export default function Button({
     return (
         <Tag
             className={cls(
-                " flex gap-1 items-center justify-center h-12 px-4 text-center font-custom2 rounded-xl transition-all duration-200 ",
+                " flex gap-1 items-center justify-center h-12 px-4 text-center font-custom2 cursor-pointer rounded-xl transition-all duration-200 ",
                 {
                     " aspect-square ": !label,
                     " bg-[#3b82f6] text-white opacity-80 hover:opacity-100 tracking-wide ": variant == 1,
@@ -38,12 +38,14 @@ export default function Button({
             >
                 {label}
             </span>
-            <FontAwesomeIcon
-                className={cls(" text-sm ", classIcon, {
-                    " hidden ": !icon || children,
-                })}
-                icon={icon || faQuestion}
-            />
+            {icon && !children && (
+                <FontAwesomeIcon
+                    className={cls(" text-sm ", classIcon, {
+                        " hidden ": !icon || children,
+                    })}
+                    icon={icon || faQuestion}
+                />
+            )}
             {children}
         </Tag>
     );

@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
     return (
-        <footer className=" parent bg-[--c2] text-[--c3] text-center py-10 ">
+        <footer className=" parent bg-c2 text-c3 text-center py-10 ">
             <div className=" container ">
-                <h2 className=" text-2xl font-bold mb-2 text-[--c1] ">Contáctanos</h2>
+                <h2 className=" text-2xl font-bold mb-2 text-c1 ">Contáctanos</h2>
                 <div className=" flex items-center justify-between w-full max-w-96 px-4 py-2 mb-5 mx-auto bg-white rounded-md border border-[#21b859] ">
                     <input
                         type="text"

@@ -34,9 +34,9 @@ export default function Slider() {
             </Swiper>
             <div className=" absolute z-10 inset-0 flex flex-col items-center justify-center w-full max-w-96 aspect-video p-10 m-auto bg-black/50 rounded-md backdrop-blur-sm ">
                 <img className=" w-full aspect-video object-contain mb-2 " src="./logo.png" alt="Logo de Ideasoft" />
-                <h2 className=" text-4xl font-custom1 text-[--c1] leading-6 uppercase ">Ideasoft</h2>
-                <h3 className=" text-2xl font-custom1 text-[--c3] leading-6 uppercase ">Halterofilia</h3>
-                <Link to="/about" className=" mt-2 px-4 py-2 text-lg font-custom1 text-[--c1] bg-black/60 rounded-md hover:bg-[--c2] transition-all ">
+                <h2 className=" text-4xl font-custom1 text-c1 leading-6 uppercase ">Ideasoft</h2>
+                <h3 className=" text-2xl font-custom1 text-c3 leading-6 uppercase ">Halterofilia</h3>
+                <Link to="/about" className=" mt-2 px-4 py-2 text-lg font-custom1 text-c1 bg-black/60 rounded-md hover:bg-c2 transition-all ">
                     Competición actual
                 </Link>
             </div>
