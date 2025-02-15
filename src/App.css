@@ -1,39 +1,57 @@
 :root {
     --container-max-width: 1500px;
-    --container-padding: 20px;
-    --header-height: 70px;
+    --container-padding: 50px;
+    --header-height: 85px;
+    --sidebar-width: 350px;
 
     --panel-header-height: 100px;
     --panel-sidebar-width: 300px;
     --panel-sidebar-width-min: 100px;
 }
 
+@view-transition {
+    navigation: auto;
+}
+
+* {
+    outline: none;
+}
+
 .parent {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding-left: var(--container-padding);
     padding-right: var(--container-padding);
 }
 
 .container {
-    width: 100%;
     max-width: var(--container-max-width);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1400px) {
+    :root {
+        --container-padding: 30px;
+        --sidebar-width: 250px;
+    }
+}
+
+@media (max-width: 1200px) {
+    :root {
+        --container-padding: 20px;
+    }
+}
+
+@media (max-width: 1000px) {
     :root {
         --container-padding: 10px;
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 800px) {
     :root {
-        --container-padding: 5px;
+        --container-padding: 10px;
     }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 350px) {
     :root {
         --container-padding: 2px;
     }

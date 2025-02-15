@@ -25,6 +25,7 @@ export default function Button({
                     " gap-2 bg-black/10 hover:bg-black/20 ": variant == 2,
                     " bg-red-400 text-black opacity-80 hover:opacity-100 tracking-wide ": variant == 3,
                     " bg-green-400 text-black opacity-80 hover:opacity-100 tracking-wide ": variant == 4,
+                    " bg-transparent ": variant == 5,
                 },
                 className
             )}

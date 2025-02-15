@@ -1,41 +1,40 @@
-import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import DarkModeButton from "./ui/DarkModeButton";
+import { useLandingStore } from "../stores/useLandingStore";
 import { cls } from "../common/utils";
+import LinkLogo from "./ui/LinkLogo";
+import { motion } from "framer-motion";
 
-export default function Header() {
+export default function Header({ className = "" }) {
+    const { openMenu, toggleMenu } = useLandingStore();
     return (
-        <header className=" parent sticky top-0 z-10 h-[var(--header-height)] bg-c2 ">
-            <div className="container flex h-full ">
-                <Link to="/" className=" relative flex items-center h-full bg-c3  ">
-                    <div className=" absolute top-0 -left-full z-10 w-full h-full bg-c3 " />
-                    <img className=" h-full aspect-square object-contain p-3 " src="./logo.png" alt="Logo de Ideasoft" />
-                    <div className=" flex flex-col text-c3-txt ">
-                        <h1 className=" text-2xl font-bold uppercase leading-5 font-custom1 tracking-wider ">Ideasoft</h1>
-                        <h2 className=" text-lg opacity-80 uppercase leading-5 font-custom1 ">Halterofilia</h2>
-                    </div>
-                </Link>
-
-                <nav className=" flex-1 flex justify-end items-center gap-4 h-full ">
-                    <div className=" h-full w-24 bg-gradient-to-tr from-c3 from-50% to-c2 to-50% mr-auto " />
-                    <Option name="Inicio" to="/" />
-                    <Option name="Competencias" to="/competitions" />
-                    <Option name="About" to="/about" />
-                    <Option name="Contacto" to="/contact" />
-                    <Option name="Login" to="/login" />
-                </nav>
-            </div>
+        <header
+            className={cls(
+                " parent block py-[var(--container-padding)] shadow-md bg-c4 text-c4-txt lg:dark:bg-dark-c4 lg:dark:text-dark-c4-txt dark:bg-dark-c1  dark:text-dark-c1-txt ",
+                " sticky top-0 z-20 ",
+                " lg:static lg:z-0 lg:shadow-none ",
+                className
+            )}
+        >
+            <section className={cls(" flex-1 flex justify-end items-center h-full ", "  ")}>
+                <LinkLogo className={" flex lg:hidden h-[var(--header-height)] mr-auto py-5.5 sm:py-5 md:py-4.5 "} />
+                <DarkModeButton className=" hidden lg:flex " />
+                {/* <Button className=" block lg:hidden relative z-20 mt-[2px] " onClick={toggleMenu} icon={faBars} /> */}
+                <BurgerMenu open={openMenu} toggleMenu={toggleMenu} />
+            </section>
         </header>
     );
 }
 
-function Option({ name = "", to = "#" }) {
-    const className = " absolute top-0 -bottom-full group-hover:bottom-0 -z-10 opacity-0 group-hover:opacity-100 m-auto transition-all text-c1 ";
+export function BurgerMenu({ open = false, toggleMenu = () => {} }) {
     return (
-        <Link to={to} className=" relative group flex items-center text-xl uppercase leading-6 font-custom1 text-c3 ">
-            <FontAwesomeIcon className={cls(className, "  left-0 group-hover:-left-3.5  ")} icon={faDumbbell} />
-            <span className=" text-lg bg-c2 px-0.5 group-hover:text-c1 transition-all ">{name}</span>
-            <FontAwesomeIcon className={cls(className, " right-0 group-hover:-right-3.5 ")} icon={faDumbbell} />
-        </Link>
+        <button onClick={toggleMenu} className=" relative w-10 h-8.5 flex flex-col justify-between p-2 cursor-pointer lg:hidden dark:opacity-80 ">
+            <BurgerLine animate={{ rotate: open ? 45 : 0, y: open ? 8 : 0 }} />
+            <BurgerLine animate={{ opacity: open ? 0 : 1 }} />
+            <BurgerLine animate={{ rotate: open ? -45 : 0, y: open ? -8 : 0 }} />
+        </button>
     );
+}
+
+function BurgerLine({ animate = {} }) {
+    return <motion.div className="w-6 h-0.5 bg-c4-txt dark:bg-dark-c4-txt rounded" animate={animate} transition={{ duration: 0.3 }} />;
 }

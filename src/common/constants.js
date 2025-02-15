@@ -4,8 +4,12 @@ export const USER_ROLES = {
 };
 
 export const ROUTES_LANDING = {
-    HOME: "/",
+    BASE: "/",
+    HOME: "",
     LOGIN: "/login",
+    REGISTER: "/register",
+    INSTITUTIONS: "institutions",
+    CHAMPIONSHIPS: "championships",
 };
 
 export const ROUTES_SESSION = {

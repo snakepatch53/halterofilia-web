@@ -28,6 +28,10 @@
     --color-c3: black;
     --color-c3-txt: white;
 
+    --color-c4: #e6e9ee;
+    --color-c4-txt: black;
+    --color-c4-txt2: #3b82f6;
+
     /* dark */
     --color-dark-c1: #3b82f6;
     --color-dark-c1-txt: white;
@@ -38,12 +42,12 @@
 
     --color-dark-c3: white;
     --color-dark-c3-txt: black;
+
+    --color-dark-c4: #1f2937;
+    --color-dark-c4-txt: white;
+    --color-dark-c4-txt2: #3b82f6;
 }
 
-@view-transition {
-    navigation: auto;
-}
-
-* {
-    outline: none;
+:root {
+    --col: #e6e9ee;
 }
